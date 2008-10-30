@@ -1,0 +1,7 @@
+dir = File.dirname(__FILE__) + '/cb-music-theory'
+require dir + '/note'
+require dir + '/note_interval'
+require dir + '/chord'
+require dir + '/scale'
+require dir + '/guitar_string'
+require dir + '/guitar'
