@@ -27,15 +27,20 @@ class Scale < RootNoteWithIntervals
   end
   
   def degree_triad(deg)
-    # build a triad using deg as the root note, and then skip a degree to pick the next two notes of the triad
-      intervals = [deg,deg+2,deg+4].map{|n|
-        NoteInterval.new(self.degree(deg).distance_to(self.degree(n)))
-      }
-    Chord.new(self.degree(deg),intervals)
+    self.harmonized_chord(1,[1,3,5])
   end
-  
+    
   def all_degree_triads
     [1,2,3,4,5,6,7].map{|d| self.degree_triad(d)}
+  end
+  
+  def harmonized_chord(start_degree,degrees)
+    intervals = degrees.map{|n|  NoteInterval.new(self.degree(start_degree).distance_to(self.degree(start_degree + n - 1)))}
+    Chord.new(self.degree(start_degree),intervals)
+  end
+
+  def all_harmonized_chords(degrees)
+    [1,2,3,4,5,6,7].map{|d| self.harmonized_chord(d,degrees)}
   end
   
 end
