@@ -7,20 +7,33 @@ class Note
     ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
   end
 
-  def initialize(val)
-    @value = val
+  def self.flat_twelve_tones
+    ["C","Db","D","Eb","E","F","Gb","G","Ab","A","Bb","B"]
+  end
+
+  def initialize(var = nil)
+    if var.kind_of?(String)
+      @value = Note.value_from_name(var)
+    else
+      @value = var
+    end
   end
 
   def ==(other_note)
     @value == other_note.value
   end
   
-
-  def self.from_name(n)
+  def self.value_from_name(name)
+    #The octave isn't supplied, so 
     #default to octave #4 (see MIDI reference at http://www.harmony-central.com/MIDI/Doc/table2.html)
-    Note.new(Note.twelve_tones.index(n) + 60)
+    result = Note.twelve_tones.index(name) || Note.flat_twelve_tones.index(name)
+    result += 60
+    result
   end
-  
+
+  def self.name_from_value(v)
+    Note.twelve_tones[v % 12]
+  end
   
   def plus_interval(interval)
     Note.new(@value + interval.value)
@@ -35,7 +48,7 @@ class Note
   end
   
   def name
-    Note.twelve_tones[@value % 12]
+    Note.name_from_value(@value)
   end
     
   def major_scale

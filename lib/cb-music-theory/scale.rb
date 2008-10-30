@@ -1,11 +1,4 @@
-class Scale
-  
-  attr_reader :intervals
-  
-  def initialize(root_note,intervals)
-    @root_note = root_note
-    @intervals = intervals
-  end
+class Scale < RootNoteWithIntervals
   
   def self.major_scale(root_note)
     Scale.new(root_note,
@@ -20,30 +13,6 @@ class Scale
       ])
   end
 
-
-  def notes
-    @intervals.map{|i| @root_note.plus_interval(i)}
-  end
-
-  def note_names
-    self.notes.map{|n| n.name}
-  end
-  
-  def note_values
-    self.notes.map{|n| n.value}
-  end
-
-  def interval_names
-    @intervals.map{|i| i.short_name}
-  end
-  
-  def interval_values
-    @intervals.map{|i| i.value}
-  end
-
-  def nin_pairs
-    @intervals.map{|i| [i,@root_note.plus_interval(i)]}
-  end
 
   def interval_for_degree(pos)
     octaves = (pos - 1) / 7
