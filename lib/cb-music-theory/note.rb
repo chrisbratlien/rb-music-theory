@@ -28,7 +28,6 @@ class Note
     #default to octave #4 (see MIDI reference at http://www.harmony-central.com/MIDI/Doc/table2.html)
     result = Note.twelve_tones.index(name) || Note.flat_twelve_tones.index(name)
     result += 60
-    result
   end
 
   def self.name_from_value(v)
