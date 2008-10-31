@@ -1,0 +1,20 @@
+h1. cb-music-theory
+
+h2. Overview
+
+h3. Examples
+
+<pre><code>
+  irb(main):025:0> Note.new("C")
+  => #<Note:0x2679f4c @value=60>
+  irb(main):026:0> Note.new("C").name
+  => "C"
+  irb(main):027:0> Note.new("C").plus_interval(NoteInterval.new(12))
+  => #<Note:0x2674524 @value=72>
+  irb(main):028:0> Note.new("C").plus_interval(NoteInterval.octave)
+  => #<Note:0x2675438 @value=72>
+  irb(main):029:0> Note.new("C").plus_interval(NoteInterval.octave).name
+  => "C"
+  irb(main):030:0>
+</code>
+</pre>

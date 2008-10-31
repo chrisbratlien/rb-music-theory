@@ -1,15 +1,13 @@
 require 'rubygems'
 require 'rake/gempackagetask'
-require "extlib"
-require 'merb-core/tasks/merb_rake_helper'
 require "spec/rake/spectask"
 
 ##############################################################################
 # Package && release
 ##############################################################################
 RUBY_FORGE_PROJECT  = "cb-music-theory"
-PROJECT_URL         = "http://chrisbratlien.com"
-PROJECT_SUMMARY     = "Basic music theory classes"
+PROJECT_URL         = "http://github.com/chrisbratlien/cb-music-theory/tree/master"
+PROJECT_SUMMARY     = "Basic music theory including notes, note intervals, scales, and chords"
 PROJECT_DESCRIPTION = PROJECT_SUMMARY
 
 GEM_AUTHOR = "Chris Bratlien"
@@ -21,7 +19,6 @@ GEM_VERSION = "0.1"
 
 RELEASE_NAME    = "REL #{GEM_VERSION}"
 
-#require "extlib/tasks/release"
 
 spec = Gem::Specification.new do |s|
   s.rubyforge_project = RUBY_FORGE_PROJECT
@@ -29,15 +26,14 @@ spec = Gem::Specification.new do |s|
   s.version = GEM_VERSION
   s.platform = Gem::Platform::RUBY
   s.has_rdoc = true
-  s.extra_rdoc_files = ["README", "LICENSE", 'TODO']
+  s.extra_rdoc_files = ["README.textile", "LICENSE", 'TODO']
   s.summary = PROJECT_SUMMARY
   s.description = PROJECT_DESCRIPTION
   s.author = GEM_AUTHOR
   s.email = GEM_EMAIL
   s.homepage = PROJECT_URL
-  s.add_dependency('merb-core', '>= 0.9.9')
   s.require_path = 'lib'
-  s.files = %w(LICENSE README Rakefile TODO) + Dir.glob("{lib,spec}/**/*")
+  s.files = %w(LICENSE README.textile Rakefile TODO) + Dir.glob("{lib,spec}/**/*")
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
