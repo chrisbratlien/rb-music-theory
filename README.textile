@@ -2,7 +2,8 @@ h1. cb-music-theory
 
 h2. Overview
 
-h3. Note and
+h3. Note
+
 A Note has a distinct integer value indicating its place on the chromatic scale.
 I might as well make that compatible with the MIDI reference, even though I'm
 not using this for any MIDI work as of yet.
