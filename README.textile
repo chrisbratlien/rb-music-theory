@@ -19,11 +19,31 @@ of the NoteInterval to the value of the original Note.
 h3. Scales and Chords
 
 Both of these classes share a superclass RootNoteWithIntervals.  Both require
-a root Note and an array of NoteIntervals which may be applied to the root
-Note into the various Notes in the Scale or Chord.
+a root Note and an array of NoteIntervals which, when applied to the root
+Note, yield the actual Notes in the Scale or Chord.
 
-caveat: the intervals array should include a NoteInterval of zero to truly
-reveal the root Note.
+* caveat: the intervals Array must contain a NoteInterval of zero to represent
+the root Note.
+
+For convenience, the major scale has been included as a class method
+Ex:
+<pre><code>
+  class Scale < RootNoteWithIntervals
+
+    def self.major_scale(root_note)
+      Scale.new(root_note,
+        [
+          NoteInterval.unison,
+          NoteInterval.maj2,
+          NoteInterval.maj3,
+          NoteInterval.per4,
+          NoteInterval.per5,
+          NoteInterval.maj6,
+          NoteInterval.maj7
+        ])
+    end
+  end
+</pre></code>
  
 
 h2. Examples
