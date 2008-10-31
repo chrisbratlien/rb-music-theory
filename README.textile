@@ -2,34 +2,35 @@ h1. cb-music-theory
 
 h2. Overview
 
+
+basic music theory including notes, note intervals, scales, chords
+
 h3. Note
 
-A Note has a distinct integer value indicating its place on the chromatic scale.
-I might as well make that compatible with the MIDI reference, even though I'm
-not using this for any MIDI work as of yet.
-
-http://www.harmony-central.com/MIDI/Doc/table2.html
+A Note has an Integer value indicating its place on the chromatic scale.  Asking a
+note its octave or name will give you an answer compatible with this 
+<a href="http://www.harmony-central.com/MIDI/Doc/table2.html">MIDI note number chart</a>.
 
 h3. NoteInterval
 
-A NoteInterval is used to transform a note into a new Note.
-
-Similar to adding two Points together in Morphic, where the 2nd point is the 
-transformation of the first point's x and y coordinates.
+A NoteInterval is used to transform a Note into a new Note by adding the value
+of the NoteInterval to the value of the original Note.
 
 h3. Scales and Chords
 
-Both of these classes require
-* root_note (Note)
-* intervals (array of NoteIntervals)
+Both of these classes share a superclass RootNoteWithIntervals.  Both require
+a root Note and an array of NoteIntervals which may be applied to the root
+Note into the various Notes in the Scale or Chord.
 
-So I decided to derive both classes from a base class RootNoteWithIntervals
-
+caveat: the intervals array should include a NoteInterval of zero to truly
+reveal the root Note.
+ 
 
 h2. Examples
 
 
 h3. Notes and NoteIntervals
+
 <pre><code>
   irb(main):025:0> Note.new("C")
   => #<Note:0x2679f4c @value=60>
@@ -45,13 +46,6 @@ h3. Notes and NoteIntervals
 </code></pre>
 
 h3. Scales and Chords
-
-Both of these classes require
-* root_note (Note)
-* intervals (array of NoteIntervals)
-
-So I decided to derive both classes from a base class RootNoteWithIntervals
- 
 
 <pre><code>
   
