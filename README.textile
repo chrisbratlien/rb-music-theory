@@ -6,8 +6,8 @@ Basic twelve-tone music theory including notes, note intervals, scales, chords
 
 h3. Note
 
-A Note has an Integer value indicating its place on the chromatic scale. 
-<a href="http://www.harmony-central.com/MIDI/Doc/table2.html">MIDI note number chart</a>.
+A Note has an Integer value indicating its place on the chromatic scale.  Compatible with
+the <a href="http://www.harmony-central.com/MIDI/Doc/table2.html">MIDI note number chart</a>.
 
 h3. NoteInterval
 
@@ -46,14 +46,13 @@ them
 * a root Note
 * an array of NoteIntervals
 
-As demonstrated above, the NoteIntervals applied to the root
+As shown above, the NoteIntervals applied to the root
 Note will yield the actual Notes in the Scale or Chord.
 
-* caveat: the intervals Array must contain a NoteInterval of zero to represent
-the root Note.
+h4. Major Scale
 
-The major scale has been included as a class method.  Notice
-that it passes an array of intervals containing NoteInterval.unison for the
+The major scale has been included as a class method.  Notice the array of
+NoteIntervals passed includes NoteInterval.unison for the
 root note (same as NoteInterval.new(0)).
 <pre><code>
   class Scale < RootNoteWithIntervals
@@ -73,10 +72,8 @@ root note (same as NoteInterval.new(0)).
   end
 </pre></code>
  
-Ex:
 
 <pre><code>
-  Scale.major_scale
   irb(main):050:0> Scale.major_scale(Note.new("C"))
   => #<Scale:0x2675dc0 @intervals=[#<NoteInterval:0x2675690 @value=0>, 
    #<NoteInterval:0x267567c @value=2>, #<NoteInterval:0x2675668 @value=4>, #<NoteInterval:0x2675654 @value=5>,
@@ -102,31 +99,64 @@ class RootNoteWithIntervals
   end
 
 end
+
+irb(main):053:0> Scale.major_scale(Note.new("C")).note_names
+=> ["C", "D", "E", "F", "G", "A", "B"]
+
 </code></pre>
 
-With scales, there's the additional jargon of degrees
-
-
-
-
-
-
+The Note class also has an instance method major_scale for syntactic sugar
 
 <pre><code>
-</code>
-</pre>
-
-
-
-
-h2. Examples
-
-
-h3. Notes and NoteIntervals
-
-
-h3. Scales and Chords
-
-<pre><code>
-  
+irb(main):055:0> Note.new("C").major_scale.note_names
+=> ["C", "D", "E", "F", "G", "A", "B"]
+irb(main):056:0> Note.new("F#").major_scale.note_names
+=> ["F#", "G#", "A#", "B", "C#", "D#", "F"]
 </code></pre>
+
+h4. Degrees
+
+Asking a Scale for a Degree at a 1-based position.  Degrees higher than 7 wrap
+around the scale to the next octave.  The 1st degree of the
+C major scale is the note C.  The 8th degree is also C, but an octave higher.
+Notice the value of 72.  The same applies for higher degrees commonly
+
+<pre><code>
+  irb(main):073:0> Note.new("C").major_scale.degree(1)
+  => #<Note:0x2674e98 @value=60>
+  irb(main):074:0> Note.new("C").major_scale.degree(1).name
+  => "C"
+  irb(main):075:0> Note.new("C").major_scale.degree(8)
+  => #<Note:0x2674e84 @value=72>
+  irb(main):076:0> Note.new("C").major_scale.degree(8).name
+  => "C"
+  irb(main):077:0> Note.new("C").major_scale.degree(9)
+  => #<Note:0x2674de4 @value=74>
+  irb(main):078:0> Note.new("C").major_scale.degree(9).name
+  => "D"
+  irb(main):079:0> Note.new("C").major_scale.degree(11)
+  => #<Note:0x2674d1c @value=77>
+  irb(main):080:0> Note.new("C").major_scale.degree(11).name
+  => "F"
+  irb(main):081:0> Note.new("C").major_scale.degree(13)
+  => #<Note:0x2674c54 @value=81>
+  irb(main):082:0> Note.new("C").major_scale.degree(13).name
+  => "A"
+</code></pre>
+
+FIXME: I haven't fully thought through the how to model
+scales with other than 7 notes, such as pentatonic scales.
+
+h4. Chords
+
+I found <a href="http://www.harmony-central.com/Guitar/chord-and-theory-chart.txt">several</a> <a href="http://jmdl.com/howard/music/quick_crd_ref.html">references</a> on the Internet which define
+the NoteIntervals for common chords.
+
+While Chord is its own class, I plan to create them as an instance method of a Note.
+
+
+chord example
+chord patterns as class methods
+inverting a chord
+
+
