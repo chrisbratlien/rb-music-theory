@@ -2,8 +2,7 @@ h1. cb-music-theory
 
 h2. Overview
 
-
-basic music theory including notes, note intervals, scales, chords
+Basic twelve-tone music theory including notes, note intervals, scales, chords
 
 h3. Note
 
@@ -15,6 +14,33 @@ h3. NoteInterval
 
 A NoteInterval is used to transform a Note into a new Note by adding the value
 of the NoteInterval to the value of the original Note.
+
+Note + NoteInterval => Note
+
+<pre><code>
+  irb(main):025:0> Note.new("C")
+  => #<Note:0x2679f4c @value=60>
+  irb(main):026:0> Note.new("C").name
+  => "C"
+  irb(main):027:0> Note.new("C").plus_interval(NoteInterval.new(12))
+  => #<Note:0x2674524 @value=72>
+  irb(main):028:0> Note.new("C").plus_interval(NoteInterval.octave)
+  => #<Note:0x2675438 @value=72>
+  irb(main):029:0> Note.new("C").plus_interval(NoteInterval.octave).name
+  => "C"
+  irb(main):030:0>
+</code></pre>
+
+
+You can chain NoteIntervals to each other to produce a new NoteInterval of their
+sum.
+
+NoteInterval + NoteInterval => NoteInterval
+<pre><code>
+irb(main):046:0> NoteInterval.new(5).plus_interval(NoteInterval.new(7))
+=> #<NoteInterval:0x267396c @value=12>
+</code></pre>
+
 
 h3. Scales and Chords
 
@@ -52,19 +78,6 @@ h2. Examples
 
 h3. Notes and NoteIntervals
 
-<pre><code>
-  irb(main):025:0> Note.new("C")
-  => #<Note:0x2679f4c @value=60>
-  irb(main):026:0> Note.new("C").name
-  => "C"
-  irb(main):027:0> Note.new("C").plus_interval(NoteInterval.new(12))
-  => #<Note:0x2674524 @value=72>
-  irb(main):028:0> Note.new("C").plus_interval(NoteInterval.octave)
-  => #<Note:0x2675438 @value=72>
-  irb(main):029:0> Note.new("C").plus_interval(NoteInterval.octave).name
-  => "C"
-  irb(main):030:0>
-</code></pre>
 
 h3. Scales and Chords
 
