@@ -2,8 +2,33 @@ h1. cb-music-theory
 
 h2. Overview
 
-h3. Examples
+h3. Note and
+A Note has a distinct integer value indicating its place on the chromatic scale.
+I might as well make that compatible with the MIDI reference, even though I'm
+not using this for any MIDI work as of yet.
 
+http://www.harmony-central.com/MIDI/Doc/table2.html
+
+h3. NoteInterval
+
+A NoteInterval is used to transform a note into a new Note.
+
+Similar to adding two Points together in Morphic, where the 2nd point is the 
+transformation of the first point's x and y coordinates.
+
+h3. Scales and Chords
+
+Both of these classes require
+* root_note (Note)
+* intervals (array of NoteIntervals)
+
+So I decided to derive both classes from a base class RootNoteWithIntervals
+
+
+h2. Examples
+
+
+h3. Notes and NoteIntervals
 <pre><code>
   irb(main):025:0> Note.new("C")
   => #<Note:0x2679f4c @value=60>
@@ -16,5 +41,17 @@ h3. Examples
   irb(main):029:0> Note.new("C").plus_interval(NoteInterval.octave).name
   => "C"
   irb(main):030:0>
-</code>
-</pre>
+</code></pre>
+
+h3. Scales and Chords
+
+Both of these classes require
+* root_note (Note)
+* intervals (array of NoteIntervals)
+
+So I decided to derive both classes from a base class RootNoteWithIntervals
+ 
+
+<pre><code>
+  
+</code></pre>
