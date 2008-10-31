@@ -26,7 +26,8 @@ Note, yield the actual Notes in the Scale or Chord.
 the root Note.
 
 For convenience, the major scale has been included as a class method.  Notice
-that it includes NoteInterval.unison for the root note (same as NoteInterval.new(0)).
+that it passes an array of intervals containing NoteInterval.unison for the
+root note (same as NoteInterval.new(0)).
 <pre><code>
   class Scale < RootNoteWithIntervals
 
