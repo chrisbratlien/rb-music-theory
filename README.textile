@@ -6,14 +6,12 @@ Basic twelve-tone music theory including notes, note intervals, scales, chords
 
 h3. Note
 
-A Note has an Integer value indicating its place on the chromatic scale.  Asking a
-note its octave or name will give you an answer compatible with this 
+A Note has an Integer value indicating its place on the chromatic scale. 
 <a href="http://www.harmony-central.com/MIDI/Doc/table2.html">MIDI note number chart</a>.
 
 h3. NoteInterval
 
-A NoteInterval is used to transform a Note into a new Note by adding the value
-of the NoteInterval to the value of the original Note.
+A NoteInterval is used to transform a Note into a new Note.
 
 Note + NoteInterval => Note
 
@@ -30,10 +28,9 @@ Note + NoteInterval => Note
   => "C"
   irb(main):030:0>
 </code></pre>
+Notice that NoteInterval.octave is the same as NoteInterval.new(12)
 
-
-You can chain NoteIntervals to each other to produce a new NoteInterval of their
-sum.
+NoteIntervals can be added together
 
 NoteInterval + NoteInterval => NoteInterval
 <pre><code>
@@ -44,14 +41,18 @@ irb(main):046:0> NoteInterval.new(5).plus_interval(NoteInterval.new(7))
 
 h3. Scales and Chords
 
-Both of these classes share a superclass RootNoteWithIntervals.  Both require
-a root Note and an array of NoteIntervals which, when applied to the root
-Note, yield the actual Notes in the Scale or Chord.
+Both of these classes share a superclass RootNoteWithIntervals which gives
+them
+* a root Note
+* an array of NoteIntervals
+
+As demonstrated above, the NoteIntervals applied to the root
+Note will yield the actual Notes in the Scale or Chord.
 
 * caveat: the intervals Array must contain a NoteInterval of zero to represent
 the root Note.
 
-For convenience, the major scale has been included as a class method.  Notice
+The major scale has been included as a class method.  Notice
 that it passes an array of intervals containing NoteInterval.unison for the
 root note (same as NoteInterval.new(0)).
 <pre><code>
@@ -77,25 +78,31 @@ Ex:
 <pre><code>
   Scale.major_scale
   irb(main):050:0> Scale.major_scale(Note.new("C"))
-  => #<Scale:0x2675dc0 @intervals=[#<NoteInterval:0x2675690 @value=0>, #<NoteInterval:0x267567c @value=2>, #<NoteInterval:0x2675668 @value=4>, #<NoteInterval:0x2675654 @value=5>, #<NoteInterval:0x2675640 @value=7>, #<NoteInterval:0x267562c @value=9>, #<NoteInterval:0x2675618 @value=11>], @root_note=#<Note:0x2675e38 @value=60>>
-  </code>
-  </pre> 
+  => #<Scale:0x2675dc0 @intervals=[#<NoteInterval:0x2675690 @value=0>, 
+   #<NoteInterval:0x267567c @value=2>, #<NoteInterval:0x2675668 @value=4>, #<NoteInterval:0x2675654 @value=5>,
+   #<NoteInterval:0x2675640 @value=7>, #<NoteInterval:0x267562c @value=9>, #<NoteInterval:0x2675618 @value=11>],
+   @root_note=#<Note:0x2675e38 @value=60>>
+</code></pre> 
  
- 
-Once you ask a Scale or Chord for its Notes, the intervals are applied to the root note 
-and an array of notes are returned.  
+Often you'll just ask a Scale or Chord for its note_names.  But you have access to the notes and note_values too.
 
-def notes
-  @intervals.map{|i| @root_note.plus_interval(i)}
-end
+<pre><code>
+class RootNoteWithIntervals
 
-def note_names
-  self.notes.map{|n| n.name}
-end
+  def notes
+    @intervals.map{|i| @root_note.plus_interval(i)}
+  end
 
-def note_values
-  self.notes.map{|n| n.value}
+  def note_names
+    self.notes.map{|n| n.name}
+  end
+
+  def note_values
+    self.notes.map{|n| n.value}
+  end
+
 end
+</code></pre>
 
 With scales, there's the additional jargon of degrees
 
