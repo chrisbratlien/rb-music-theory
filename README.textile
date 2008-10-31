@@ -72,6 +72,45 @@ root note (same as NoteInterval.new(0)).
   end
 </pre></code>
  
+Ex:
+
+<pre><code>
+  Scale.major_scale
+  irb(main):050:0> Scale.major_scale(Note.new("C"))
+  => #<Scale:0x2675dc0 @intervals=[#<NoteInterval:0x2675690 @value=0>, #<NoteInterval:0x267567c @value=2>, #<NoteInterval:0x2675668 @value=4>, #<NoteInterval:0x2675654 @value=5>, #<NoteInterval:0x2675640 @value=7>, #<NoteInterval:0x267562c @value=9>, #<NoteInterval:0x2675618 @value=11>], @root_note=#<Note:0x2675e38 @value=60>>
+  </code>
+  </pre> 
+ 
+ 
+Once you ask a Scale or Chord for its Notes, the intervals are applied to the root note 
+and an array of notes are returned.  
+
+def notes
+  @intervals.map{|i| @root_note.plus_interval(i)}
+end
+
+def note_names
+  self.notes.map{|n| n.name}
+end
+
+def note_values
+  self.notes.map{|n| n.value}
+end
+
+With scales, there's the additional jargon of degrees
+
+
+
+
+
+
+
+<pre><code>
+</code>
+</pre>
+
+
+
 
 h2. Examples
 
