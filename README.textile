@@ -119,7 +119,7 @@ h4. Degrees
 Asking a Scale for a Degree at a 1-based position.  Degrees higher than 7 wrap
 around the scale to the next octave.  The 1st degree of the
 C major scale is the note C.  The 8th degree is also C, but an octave higher.
-Notice the value of 72.  The same applies for higher degrees commonly
+Notice the value of 72.
 
 <pre><code>
   irb(main):073:0> Note.new("C").major_scale.degree(1)
@@ -144,19 +144,31 @@ Notice the value of 72.  The same applies for higher degrees commonly
   => "A"
 </code></pre>
 
-FIXME: I haven't fully thought through the how to model
+FIXME: I haven't fully thought through how to model
 scales with other than 7 notes, such as pentatonic scales.
+
 
 h4. Chords
 
-I found <a href="http://www.harmony-central.com/Guitar/chord-and-theory-chart.txt">several</a> <a href="http://jmdl.com/howard/music/quick_crd_ref.html">references</a> on the Internet which define
-the NoteIntervals for common chords.
+I found <a href="http://www.harmony-central.com/Guitar/chord-and-theory-chart.txt">several</a> <a href="http://jmdl.com/howard/music/quick_crd_ref.html">references</a> on the Internet to help me
+pick NoteIntervals for common chords.
 
-While Chord is its own class, I plan to create them as an instance method of a Note.
-
+While Chord is its own class, I plan to create them by calling an instance method of a Note.
 
 chord example
-chord patterns as class methods
-inverting a chord
+<pre><code>
+  
+</code></pre>
 
+h4. inverting a chord
+
+blah
+
+h4. Harmonized scales 
+
+From what I understand, this means moving a chord built on degree 1 up the scale, staying in key with the scale.
+  
+The best example of this I've seen is the following <a href="http://www.youtube.com/watch?v=fjDGl4GJosI">YouTube Video</a>
+
+<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/fjDGl4GJosI&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/fjDGl4GJosI&hl=en&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
 
