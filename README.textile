@@ -169,6 +169,6 @@ h4. Harmonized scales
 From what I understand, this means moving a chord built on degree 1 up the scale, staying in key with the scale.
   
 The best example of this I've seen is the following <a href="http://www.youtube.com/watch?v=fjDGl4GJosI">YouTube Video</a>
-
+<p>
 <object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/fjDGl4GJosI&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/fjDGl4GJosI&hl=en&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
-
+</p>
