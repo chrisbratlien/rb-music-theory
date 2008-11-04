@@ -47,7 +47,7 @@ NoteIntervals can be added together.
 h3. Scales and Chords
 
 Both of these classes share a superclass RootNoteWithIntervals which gives
-a root Note, and an array of NoteIntervals
+a root Note, and an array of NoteIntervals.
 
 As shown above, the NoteIntervals applied to the root
 Note will yield the actual Notes in the Scale or Chord.
@@ -131,8 +131,8 @@ around the scale to the next octave.
 h4. Chords
 
 
-I found <a href="http://www.harmony-central.com/Guitar/chord-and-theory-chart.txt">several</a> <a href="http://jmdl.com/howard/music/quick_crd_ref.html">references</a> on the Internet to help me
-pick NoteIntervals for common chords.
+I found <a href="http://www.harmony-central.com/Guitar/chord-and-theory-chart.txt">several</a> <a href="http://jmdl.com/howard/music/quick_crd_ref.html">references</a> on the Internet for selecting 
+NoteIntervals for common chords.
 
 <pre><code>
   irb(main):001:0> Note.new("C").major_chord
@@ -196,7 +196,3 @@ Or, to get the MIDI note numbers instead of the note names
   irb(main):044:0> Note.new("C").major_scale.all_harmonized_chords([1,3,5,7]).map{|c| c.note_values}
   => [[60, 64, 67, 71], [62, 65, 69, 72], [64, 67, 71, 74], [65, 69, 72, 76], [67, 71, 74, 77], [69, 72, 76, 79], [71, 74, 77, 81]]
 </code></pre>
-
-
-
-

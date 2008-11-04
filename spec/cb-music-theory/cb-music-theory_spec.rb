@@ -18,7 +18,10 @@ describe Note do
     end
   end
 
-  it "plus_interval should fail when passed another Note"
+  it "plus_interval should fail when passed another Note" do
+    proc { Note.new("C").plus_interval(Note.new("C")) }.should raise_error(TypeError)
+  end
+  
   
   
 end

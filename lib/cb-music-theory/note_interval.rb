@@ -21,23 +21,23 @@ class NoteInterval
   end
     
   def plus_interval(interval)
-    if interval.class == Fixnum
+    if interval.kind_of?(Fixnum)
       NoteInterval.new(@value + interval)
-    elsif interval.class == NoteInterval
+    elsif interval.kind_of?(NoteInterval)
       NoteInterval.new(@value + interval.value)
     else
-      raise ArgMustBeNoteInterval, "argument must be Fixnum or NoteInterval"
+      raise TypeError, "argument must be Fixnum or NoteInterval"
     end
   end
   alias + plus_interval
 
   def minus_interval(interval)
-    if interval.class == Fixnum
+    if interval.kind_of?(Fixnum)
       NoteInterval.new(@value - interval)
-    elsif interval.class == NoteInterval
+    elsif interval.kind_of?(NoteInterval)
       NoteInterval.new(@value - interval.value)
     else
-      raise ArgMustBeNoteInterval, "argument must be Fixnum or NoteInterval"
+      raise TypeError, "argument must be Fixnum or NoteInterval"
     end
   end
   alias - minus_interval
