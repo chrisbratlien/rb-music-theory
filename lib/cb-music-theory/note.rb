@@ -35,8 +35,26 @@ class Note
   end
   
   def plus_interval(interval)
-    Note.new(@value + interval.value)
+    if interval.class == Fixnum
+      Note.new(@value + interval)
+    elsif interval.class == NoteInterval
+      Note.new(@value + interval.value)
+    else
+      raise ArgMustBeNoteInterval, "argument must be Fixnum or NoteInterval"
+    end
   end
+  alias + plus_interval
+
+  def minus_interval(interval)
+    if interval.class == Fixnum
+      Note.new(@value - interval)
+    elsif interval.class == NoteInterval
+      Note.new(@value - interval.value)
+    else
+      raise ArgMustBeNoteInterval, "argument must be Fixnum or NoteInterval"
+    end
+  end
+  alias - minus_interval
 
   def distance_to(interval)
     interval.value - @value

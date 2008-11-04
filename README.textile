@@ -11,26 +11,33 @@ the <a href="http://www.harmony-central.com/MIDI/Doc/table2.html">MIDI note numb
 
 h3. NoteInterval
 
-A NoteInterval is used to transform a Note into a new Note.  (Note + NoteInterval => Note)
-<pre><code>
-  irb(main):025:0> Note.new("C")
-  => #<Note:0x2679f4c @value=60>
-  irb(main):026:0> Note.new("C").name
-  => "C"
-  irb(main):027:0> Note.new("C").plus_interval(NoteInterval.new(12))
-  => #<Note:0x2674524 @value=72>
-  irb(main):028:0> Note.new("C").plus_interval(NoteInterval.octave)
-  => #<Note:0x2675438 @value=72>
-  irb(main):029:0> Note.new("C").plus_interval(NoteInterval.octave).name
-  => "C"
-  irb(main):030:0>
-</code></pre>
-Notice that NoteInterval.octave is the same as NoteInterval.new(12)
+A NoteInterval is used to transform a Note into a new Note.  
+(Note + Fixnum||NoteInterval => Note)
 
-NoteIntervals can be added together.  (NoteInterval + NoteInterval => NoteInterval)
 <pre><code>
-irb(main):046:0> NoteInterval.new(5).plus_interval(NoteInterval.new(7))
-=> #<NoteInterval:0x267396c @value=12>
+  irb(main):009:0> Note.new("C")
+  => #<Note:0x267a0c8 @value=60>
+  irb(main):010:0> Note.new("C").name
+  => "C"
+  irb(main):011:0> Note.new("C") + NoteInterval.new(12)
+  => #<Note:0x2677d64 @value=72>
+  irb(main):012:0> Note.new("C") + NoteInterval.octave
+  => #<Note:0x2678f0c @value=72>
+  irb(main):013:0> (Note.new("C") + NoteInterval.octave).name
+  => "C"
+</code></pre>
+Notice:
+* that NoteInterval.octave is the same as NoteInterval.new(12)
+* plus_interval may also be used instead of + to chain the method calls
+
+NoteIntervals can be added together.  (NoteInterval + Fixnum||NoteInterval => NoteInterval)
+<pre><code>
+  irb(main):005:0> NoteInterval.new(5).plus_interval(NoteInterval.new(7))
+  => #<NoteInterval:0x2677c10 @value=12>
+  irb(main):006:0> NoteInterval.new(5) + NoteInterval.new(7)
+  => #<NoteInterval:0x26781d8 @value=12>
+  irb(main):007:0> NoteInterval.new(5) + 7
+  => #<NoteInterval:0x2679858 @value=12>
 </code></pre>
 
 h3. Scales and Chords
@@ -64,13 +71,8 @@ root note (same as NoteInterval.new(0)).
   end
 </pre></code>
  
-
-<pre><code>
-  irb(main):050:0> Scale.major_scale(Note.new("C"))
-  => #<Scale:0x2675dc0 @intervals=[#<NoteInterval:0x2675690 @value=0>, #<NoteInterval:0x267567c @value=2>, #<NoteInterval:0x2675668 @value=4>, #<NoteInterval:0x2675654 @value=5>, #<NoteInterval:0x2675640 @value=7>, #<NoteInterval:0x267562c @value=9>, #<NoteInterval:0x2675618 @value=11>], @root_note=#<Note:0x2675e38 @value=60>>
-</code></pre> 
- 
-Often you'll just ask a Scale or Chord for its note_names.  But you have access to the notes and note_values too.
+Often you'll just ask a Scale or Chord for its note_names.  But you still have access to the intervals, notes and
+note_values too.
 
 <pre><code>
 class RootNoteWithIntervals

@@ -20,9 +20,27 @@ class NoteInterval
              "8", "b9", "9", "#9","10","11","#11","12","b13","13","#13"][@value]
   end
     
-  def plus_interval(i)
-    NoteInterval.new(@value + i.value)
+  def plus_interval(interval)
+    if interval.class == Fixnum
+      NoteInterval.new(@value + interval)
+    elsif interval.class == NoteInterval
+      NoteInterval.new(@value + interval.value)
+    else
+      raise ArgMustBeNoteInterval, "argument must be Fixnum or NoteInterval"
+    end
   end
+  alias + plus_interval
+
+  def minus_interval(interval)
+    if interval.class == Fixnum
+      NoteInterval.new(@value - interval)
+    elsif interval.class == NoteInterval
+      NoteInterval.new(@value - interval.value)
+    else
+      raise ArgMustBeNoteInterval, "argument must be Fixnum or NoteInterval"
+    end
+  end
+  alias - minus_interval
   
   def self.unison
     NoteInterval.new(0)
