@@ -27,7 +27,8 @@ A NoteInterval is used to transform a Note into a new Note.
   => "C"
 </code></pre>
 Notice:
-* that NoteInterval.octave is the same as NoteInterval.new(12)
+
+* NoteInterval.octave is the same as NoteInterval.new(12)
 * plus_interval may also be used instead of + to chain the method calls
 
 NoteIntervals can be added together.  (NoteInterval + Fixnum||NoteInterval => NoteInterval)
