@@ -11,10 +11,7 @@ the <a href="http://www.harmony-central.com/MIDI/Doc/table2.html">MIDI note numb
 
 h3. NoteInterval
 
-A NoteInterval is used to transform a Note into a new Note.
-
-Note + NoteInterval => Note
-
+A NoteInterval is used to transform a Note into a new Note.  (Note + NoteInterval => Note)
 <pre><code>
   irb(main):025:0> Note.new("C")
   => #<Note:0x2679f4c @value=60>
@@ -30,14 +27,11 @@ Note + NoteInterval => Note
 </code></pre>
 Notice that NoteInterval.octave is the same as NoteInterval.new(12)
 
-NoteIntervals can be added together
-
-NoteInterval + NoteInterval => NoteInterval
+NoteIntervals can be added together.  (NoteInterval + NoteInterval => NoteInterval)
 <pre><code>
 irb(main):046:0> NoteInterval.new(5).plus_interval(NoteInterval.new(7))
 => #<NoteInterval:0x267396c @value=12>
 </code></pre>
-
 
 h3. Scales and Chords
 
@@ -75,10 +69,7 @@ root note (same as NoteInterval.new(0)).
 
 <pre><code>
   irb(main):050:0> Scale.major_scale(Note.new("C"))
-  => #<Scale:0x2675dc0 @intervals=[#<NoteInterval:0x2675690 @value=0>, 
-   #<NoteInterval:0x267567c @value=2>, #<NoteInterval:0x2675668 @value=4>, #<NoteInterval:0x2675654 @value=5>,
-   #<NoteInterval:0x2675640 @value=7>, #<NoteInterval:0x267562c @value=9>, #<NoteInterval:0x2675618 @value=11>],
-   @root_note=#<Note:0x2675e38 @value=60>>
+  => #<Scale:0x2675dc0 @intervals=[#<NoteInterval:0x2675690 @value=0>, #<NoteInterval:0x267567c @value=2>, #<NoteInterval:0x2675668 @value=4>, #<NoteInterval:0x2675654 @value=5>, #<NoteInterval:0x2675640 @value=7>, #<NoteInterval:0x267562c @value=9>, #<NoteInterval:0x2675618 @value=11>], @root_note=#<Note:0x2675e38 @value=60>>
 </code></pre> 
  
 Often you'll just ask a Scale or Chord for its note_names.  But you have access to the notes and note_values too.
@@ -116,11 +107,8 @@ irb(main):056:0> Note.new("F#").major_scale.note_names
 
 h4. Degrees
 
-Asking a Scale for a Degree at a 1-based position.  Degrees higher than 7 wrap
-around the scale to the next octave.  The 1st degree of the
-C major scale is the note C.  The 8th degree is also C, but an octave higher.
-Notice the value of 72.
-
+Asking a Scale for a degree gives you the note at that position (1-based).  Degrees higher than 7 wrap
+around the scale to the next octave.
 <pre><code>
   irb(main):073:0> Note.new("C").major_scale.degree(1)
   => #<Note:0x2674e98 @value=60>
@@ -134,41 +122,75 @@ Notice the value of 72.
   => #<Note:0x2674de4 @value=74>
   irb(main):078:0> Note.new("C").major_scale.degree(9).name
   => "D"
-  irb(main):079:0> Note.new("C").major_scale.degree(11)
-  => #<Note:0x2674d1c @value=77>
-  irb(main):080:0> Note.new("C").major_scale.degree(11).name
-  => "F"
-  irb(main):081:0> Note.new("C").major_scale.degree(13)
-  => #<Note:0x2674c54 @value=81>
-  irb(main):082:0> Note.new("C").major_scale.degree(13).name
-  => "A"
 </code></pre>
 
-FIXME: I haven't fully thought through how to model
-scales with other than 7 notes, such as pentatonic scales.
-
-
 h4. Chords
+
 
 I found <a href="http://www.harmony-central.com/Guitar/chord-and-theory-chart.txt">several</a> <a href="http://jmdl.com/howard/music/quick_crd_ref.html">references</a> on the Internet to help me
 pick NoteIntervals for common chords.
 
-While Chord is its own class, I plan to create them by calling an instance method of a Note.
-
-chord example
 <pre><code>
-  
+  irb(main):001:0> Note.new("C").major_chord
+  => #<Chord:0x267a834 @intervals=[#<NoteInterval:0x267a71c @value=0>, #<NoteInterval:0x267a708 @value=4>, #<NoteInterval:0x267a6f4 @value=7>], @root_note=#<Note:0x267a870 @value=60>>
+  irb(main):002:0> Note.new("C").major_chord.note_names
+  => ["C", "E", "G"]
+  irb(main):003:0> Note.new("C").maj7_chord.note_names
+  => ["C", "E", "G", "B"]
 </code></pre>
 
-h4. inverting a chord
+h4. Chord Inversions
 
-blah
+<pre><code>
+  irb(main):017:0> Note.new("C").major_chord
+  => #<Chord:0x267a08c @intervals=[#<NoteInterval:0x2679f10 @value=0>, #<NoteInterval:0x2679efc @value=4>, #<NoteInterval:0x2679ee8 @value=7>], @root_note=#<Note:0x267a0dc @value=60>>
+  irb(main):018:0> Note.new("C").major_chord.note_names
+  => ["C", "E", "G"]
+  irb(main):019:0> Note.new("C").major_chord.invert
+  => #<Chord:0x26794fc @intervals=[#<NoteInterval:0x2679894 @value=4>, #<NoteInterval:0x267986c @value=7>, #<NoteInterval:0x267981c @value=12>], @root_note=#<Note:0x2679ac4 @value=60>>
+  irb(main):020:0> Note.new("C").major_chord.invert.note_names
+  => ["E", "G", "C"]
+  irb(main):021:0> Note.new("C").major_chord.invert.invert
+  => #<Chord:0x2677db4 @intervals=[#<NoteInterval:0x2678cdc @value=7>, #<NoteInterval:0x2678bd8 @value=12>, #<NoteInterval:0x26783e0 @value=16>], @root_note=#<Note:0x2678fe8 @value=60>>
+  irb(main):022:0> Note.new("C").major_chord.invert.invert.note_names
+  => ["G", "C", "E"]
+</code></pre>
 
-h4. Harmonized scales 
+h4. Harmonized Scales 
 
-From what I understand, this means moving a chord built on degree 1 up the scale, staying in key with the scale.
-  
-The best example of this I've seen is the following <a href="http://www.youtube.com/watch?v=fjDGl4GJosI">YouTube Video</a>
-<p>
-<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/fjDGl4GJosI&hl=en&fs=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/fjDGl4GJosI&hl=en&fs=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="425" height="344"></embed></object>
-</p>
+Moving an in-key chord built on degree 1 up the scale, building that chord shape again and again on each
+degree while adjusting the shape to remain in-key.
+
+There's an example of this is the following <a href="http://www.youtube.com/watch?v=fjDGl4GJosI">YouTube Video</a>
+
+harmonized_chord(root_degree,degrees) => Chord
+<pre><code>
+  irb(main):032:0> Note.new("C").major_scale.harmonized_chord(1,[1,3,5,7]).note_names
+  => ["C", "E", "G", "B"]
+  irb(main):033:0> Note.new("C").major_scale.harmonized_chord(2,[1,3,5,7]).note_names
+  => ["D", "F", "A", "C"]
+  irb(main):034:0> Note.new("C").major_scale.harmonized_chord(3,[1,3,5,7]).note_names
+  => ["E", "G", "B", "D"]
+  irb(main):035:0> Note.new("C").major_scale.harmonized_chord(4,[1,3,5,7]).note_names
+  => ["F", "A", "C", "E"]
+  irb(main):036:0> Note.new("C").major_scale.harmonized_chord(5,[1,3,5,7]).note_names
+  => ["G", "B", "D", "F"]  
+</code></pre>
+
+Or do it all at once:
+
+all_harmonized_chords(degrees) => array of Chords
+<pre><code>
+  irb(main):043:0> Note.new("C").major_scale.all_harmonized_chords([1,3,5,7]).map{|c| c.note_names}
+  => [["C", "E", "G", "B"], ["D", "F", "A", "C"], ["E", "G", "B", "D"], ["F", "A", "C", "E"], ["G", "B", "D", "F"], ["A", "C", "E", "G"], ["B", "D", "F", "A"]]
+</code></pre>
+
+Or, to get the MIDI note numbers instead of the note names
+<pre><code>
+  irb(main):044:0> Note.new("C").major_scale.all_harmonized_chords([1,3,5,7]).map{|c| c.note_values}
+  => [[60, 64, 67, 71], [62, 65, 69, 72], [64, 67, 71, 74], [65, 69, 72, 76], [67, 71, 74, 77], [69, 72, 76, 79], [71, 74, 77, 81]]
+</code></pre>
+
+
+
+
