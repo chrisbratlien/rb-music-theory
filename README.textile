@@ -12,7 +12,8 @@ the <a href="http://www.harmony-central.com/MIDI/Doc/table2.html">MIDI note numb
 h3. NoteInterval
 
 A NoteInterval is used to transform a Note into a new Note.  
-(Note + Fixnum||NoteInterval => Note)
+(Note + Fixnum => Note)
+(Note + NoteInterval => Note)
 
 <pre><code>
   irb(main):009:0> Note.new("C")
@@ -31,7 +32,9 @@ Notice:
 * NoteInterval.octave is the same as NoteInterval.new(12)
 * plus_interval may also be used instead of + to chain the method calls
 
-NoteIntervals can be added together.  (NoteInterval + Fixnum||NoteInterval => NoteInterval)
+NoteIntervals can be added together.  
+(NoteInterval + Fixnum => NoteInterval)
+(NoteInterval + NoteInterval => NoteInterval)
 <pre><code>
   irb(main):005:0> NoteInterval.new(5).plus_interval(NoteInterval.new(7))
   => #<NoteInterval:0x2677c10 @value=12>
