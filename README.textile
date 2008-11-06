@@ -146,18 +146,18 @@ NoteIntervals for common chords.
 h4. Chord Inversions
 
 <pre><code>
-  irb(main):017:0> Note.new("C").major_chord
-  => #<Chord:0x267a08c @intervals=[#<NoteInterval:0x2679f10 @value=0>, #<NoteInterval:0x2679efc @value=4>, #<NoteInterval:0x2679ee8 @value=7>], @root_note=#<Note:0x267a0dc @value=60>>
-  irb(main):018:0> Note.new("C").major_chord.note_names
+  irb(main):001:0> Note.new("C").major_chord
+  => #<Chord:0x287b408 @intervals=[#<NoteInterval:0x287b2f0 @value=0>, #<NoteInterval:0x287b2dc @value=4>, #<NoteInterval:0x287b2c8 @value=7>], @root_note=#<Note:0x287b444 @value=60>>
+  irb(main):002:0> Note.new("C").major_chord.note_names
   => ["C", "E", "G"]
-  irb(main):019:0> Note.new("C").major_chord.invert
-  => #<Chord:0x26794fc @intervals=[#<NoteInterval:0x2679894 @value=4>, #<NoteInterval:0x267986c @value=7>, #<NoteInterval:0x267981c @value=12>], @root_note=#<Note:0x2679ac4 @value=60>>
-  irb(main):020:0> Note.new("C").major_chord.invert.note_names
+  irb(main):003:0> Note.new("C").major_chord.invert.note_names
   => ["E", "G", "C"]
-  irb(main):021:0> Note.new("C").major_chord.invert.invert
-  => #<Chord:0x2677db4 @intervals=[#<NoteInterval:0x2678cdc @value=7>, #<NoteInterval:0x2678bd8 @value=12>, #<NoteInterval:0x26783e0 @value=16>], @root_note=#<Note:0x2678fe8 @value=60>>
-  irb(main):022:0> Note.new("C").major_chord.invert.invert.note_names
+  irb(main):004:0> Note.new("C").major_chord.invert.invert.note_names
   => ["G", "C", "E"]
+  irb(main):005:0> Note.new("C").major_chord.invert.invert.invert.note_names
+  => ["C", "E", "G"]
+  irb(main):006:0> Note.new("C").major_chord.invert.invert.invert
+  => #<Chord:0x28793c4 @intervals=[#<NoteInterval:0x287934c @value=0>, #<NoteInterval:0x2879338 @value=4>, #<NoteInterval:0x2879324 @value=7>], @root_note=#<Note:0x2879374 @value=72>>
 </code></pre>
 
 h4. Harmonized Scales 

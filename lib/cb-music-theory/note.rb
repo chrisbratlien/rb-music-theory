@@ -68,8 +68,24 @@ class Note
     Note.name_from_value(@value)
   end
     
+  def chromatic_scale
+    Scale.chromatic_scale(self)
+  end
+  
   def major_scale
     Scale.major_scale(self)
+  end
+  
+  def natural_minor_scale
+    Scale.natural_minor_scale(self)
+  end
+
+  def harmonic_minor_scale
+    Scale.harmonic_minor_scale(self)
+  end
+  
+  def melodic_minor_scale
+    Scale.melodic_minor_scale(self)
   end
   
   def chord_methods

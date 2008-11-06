@@ -1,5 +1,9 @@
 class Scale < RootNoteWithIntervals
   
+  def self.chromatic_scale(root_note)
+    Scale.new(root_note,(0..11).to_a.map{|n| NoteInterval.new(n)})
+  end
+  
   def self.major_scale(root_note)
     Scale.new(root_note,
       [
@@ -12,8 +16,49 @@ class Scale < RootNoteWithIntervals
         NoteInterval.maj7
       ])
   end
+  
+  def self.natural_minor_scale(root_note)
+    Scale.new(root_note,
+      [
+        NoteInterval.unison,
+        NoteInterval.maj2,
+        NoteInterval.min3,
+        NoteInterval.per4,
+        NoteInterval.per5,
+        NoteInterval.min6,
+        NoteInterval.min7
+        ])
+  end
+
+  def self.harmonic_minor_scale(root_note)
+    Scale.new(root_note,
+      [
+        NoteInterval.unison,
+        NoteInterval.maj2,
+        NoteInterval.min3,
+        NoteInterval.per4,
+        NoteInterval.per5,
+        NoteInterval.min6,
+        NoteInterval.maj7
+        ])
+  end
+
+  def self.melodic_minor_scale(root_note)
+    Scale.new(root_note,
+      [
+        NoteInterval.unison,
+        NoteInterval.maj2,
+        NoteInterval.min3,
+        NoteInterval.per4,
+        NoteInterval.per5,
+        NoteInterval.maj6,
+        NoteInterval.maj7
+        ])
+  end
 
 
+
+  
   def interval_for_degree(pos)
     octaves = (pos - 1) / 7
     degrees = pos % 7
