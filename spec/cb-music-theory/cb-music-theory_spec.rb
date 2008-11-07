@@ -37,12 +37,22 @@ end
 
 describe Scale do
 
+  before(:all) do
+    @c_maj_scale = Note.new("C").major_scale
+    @c_maj_scale_note_names = ["C", "D", "E", "F", "G", "A", "B"]
+  end
+  
+
   it "should produce a chromatic scale" do
     Note.new("C").chromatic_scale.note_names.should == ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
   end
 
-  it "should produce a major scale" do
-    Note.new("C").major_scale.note_names.should == ["C", "D", "E", "F", "G", "A", "B"]
+  it "should produce a major scale with correct note names" do
+    @c_maj_scale.note_names.should == @c_maj_scale_note_names
+  end
+
+  it "should have the correct major scale degrees" do
+    (1..7).to_a.map{|d| @c_maj_scale.degree(d).name }.should == @c_maj_scale_note_names
   end
 
   it "should produce a correct A natural minor scale" do

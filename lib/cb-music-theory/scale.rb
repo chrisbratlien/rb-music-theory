@@ -56,12 +56,10 @@ class Scale < RootNoteWithIntervals
         ])
   end
 
-
-
-  
   def interval_for_degree(pos)
-    octaves = (pos - 1) / 7
-    degrees = pos % 7
+    count = @intervals.size
+    octaves = (pos - 1) / count
+    degrees = pos % count
     total_interval = NoteInterval.new(octaves*12)
     total_interval = total_interval.plus_interval(@intervals[degrees-1])
   end
@@ -76,7 +74,8 @@ class Scale < RootNoteWithIntervals
   end
     
   def all_degree_triads
-    [1,2,3,4,5,6,7].map{|d| self.degree_triad(d)}
+    #[1,2,3,4,5,6,7].map{|d| self.degree_triad(d)}
+    (1..@intervals.size).to_a.map{|d| self.degree_triad(d)}
   end
   
   def harmonized_chord(start_degree,degrees)
@@ -85,7 +84,7 @@ class Scale < RootNoteWithIntervals
   end
 
   def all_harmonized_chords(degrees)
-    [1,2,3,4,5,6,7].map{|d| self.harmonized_chord(d,degrees)}
+    (1..@intervals.size).to_a.map{|d| self.harmonized_chord(d,degrees)}
   end
   
 end
