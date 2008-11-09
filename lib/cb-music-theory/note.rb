@@ -69,24 +69,45 @@ class Note
   end
     
   def chromatic_scale
-    Scale.chromatic_scale(self)
-  end
-  
-  def major_scale
-    Scale.major_scale(self)
-  end
-  
-  def natural_minor_scale
-    Scale.natural_minor_scale(self)
-  end
+     Scale.new(self,NoteInterval.chromatic_set)
+   end
 
-  def harmonic_minor_scale
-    Scale.harmonic_minor_scale(self)
-  end
-  
-  def melodic_minor_scale
-    Scale.melodic_minor_scale(self)
-  end
+   def major_scale
+     Scale.new(self,NoteInterval.ionian_set)
+   end
+
+   def dorian_scale
+     Scale.new(self,NoteInterval.dorian_set)
+   end
+
+   def phrygian_scale
+     Scale.new(self,NoteInterval.phrygian_set)
+   end
+
+   def lydian_scale
+     Scale.new(self,NoteInterval.lydian_set)
+   end
+
+   def mixolydian_scale
+     Scale.new(self,NoteInterval.mixolydian_set)
+   end
+
+   def aeolian_scale
+     Scale.new(self,NoteInterval.aeolian_set)
+   end
+   alias natural_minor_scale aeolian_scale
+
+   def locrian_scale
+     Scale.new(self,NoteInterval.locrian_set)
+   end
+
+   def harmonic_minor_scale
+     Scale.new(self,NoteInterval.harmonic_minor_set)
+   end
+
+   def melodic_minor_scale
+     Scale.new(self,NoteInterval.melodic_minor_set)
+   end
   
   def chord_methods
     self.methods.select{|m| m =~ Regexp.new(/chord$/)}

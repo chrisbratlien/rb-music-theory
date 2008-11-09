@@ -121,4 +121,52 @@ class NoteInterval
   def self.maj13 #major_thirteenth
     NoteInterval.new(21)
   end
+
+
+  def self.shift_set(set)
+    result = set[1..-1] << set[0] + 12
+    result.map{|n| n - result[0]}
+  end
+  
+  
+  def self.chromatic_set
+    (0..11).to_a.map{|n| NoteInterval.new(n)}
+  end
+  
+  def self.ionian_set
+    [0,2,4,5,7,9,11].map{|n| NoteInterval.new(n)}
+  end
+  
+  def self.dorian_set
+    self.shift_set(NoteInterval.ionian_set)
+  end
+  
+  def self.phrygian_set
+    self.shift_set(NoteInterval.dorian_set)
+  end
+  
+  def self.lydian_set
+    self.shift_set(NoteInterval.phrygian_set)
+  end
+  
+  def self.mixolydian_set
+    self.shift_set(NoteInterval.lydian_set)
+  end
+    
+  def self.aeolian_set
+    self.shift_set(NoteInterval.mixolydian_set)
+  end
+  
+  def self.locrian_set
+    self.shift_set(NoteInterval.aeolian_set)
+  end
+      
+  def self.harmonic_minor_set
+    [0,2,3,5,7,8,11].map{|n| NoteInterval.new(n)}
+  end
+  
+  def self.melodic_minor_set
+    [0,2,3,5,7,9,11].map{|n| NoteInterval.new(n)}
+  end    
+      
 end

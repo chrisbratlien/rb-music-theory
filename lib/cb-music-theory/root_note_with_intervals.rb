@@ -53,5 +53,13 @@ class RootNoteWithIntervals
    remove_interval(o).add_interval(n)
  end
 
+ def invert
+    # remove the first entry and append it to the end of the array as an octave higher than itself
+    offset = notes[0].distance_to(notes[1])
+    sorted = @intervals[1..-1].uniq.sort{|a,b| a.value <=> b.value}
+    sorted = sorted << (@intervals[0] + 12)
+    self.class.new(notes[1],sorted.map{|i| i - offset})
+  end
+
 end
  

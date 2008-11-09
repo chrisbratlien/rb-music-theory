@@ -66,5 +66,7 @@ describe Scale do
   it "should produce a correct A melodic minor scale" do
     Note.new("A").melodic_minor_scale.note_names.should == ["A", "B", "C", "D", "E", "F#", "G#"]
   end
+  
+
 
 end

@@ -51,29 +51,6 @@ a root Note, and an array of NoteIntervals.
 
 As shown above, the NoteIntervals applied to the root
 Note will yield the actual Notes in the Scale or Chord.
-
-h4. Major Scale
-
-The major scale has been included as a class method.  Notice the array of
-NoteIntervals passed includes NoteInterval.unison for the
-root note (same as NoteInterval.new(0)).
-<pre><code>
-  class Scale < RootNoteWithIntervals
-
-    def self.major_scale(root_note)
-      Scale.new(root_note,
-        [
-          NoteInterval.unison,
-          NoteInterval.maj2,
-          NoteInterval.maj3,
-          NoteInterval.per4,
-          NoteInterval.per5,
-          NoteInterval.maj6,
-          NoteInterval.maj7
-        ])
-    end
-  end
-</pre></code>
  
 Often you'll just ask a Scale or Chord for its note_names.  But you still have access to the intervals, notes and
 note_values too.
@@ -95,14 +72,6 @@ class RootNoteWithIntervals
 
 end
 
-irb(main):053:0> Scale.major_scale(Note.new("C")).note_names
-=> ["C", "D", "E", "F", "G", "A", "B"]
-
-</code></pre>
-
-The Note class also has an instance method major_scale for syntactic sugar
-
-<pre><code>
 irb(main):055:0> Note.new("C").major_scale.note_names
 => ["C", "D", "E", "F", "G", "A", "B"]
 irb(main):056:0> Note.new("F#").major_scale.note_names

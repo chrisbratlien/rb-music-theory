@@ -1,61 +1,5 @@
 class Scale < RootNoteWithIntervals
-  
-  def self.chromatic_scale(root_note)
-    Scale.new(root_note,(0..11).to_a.map{|n| NoteInterval.new(n)})
-  end
-  
-  def self.major_scale(root_note)
-    Scale.new(root_note,
-      [
-        NoteInterval.unison,
-        NoteInterval.maj2,
-        NoteInterval.maj3,
-        NoteInterval.per4,
-        NoteInterval.per5,
-        NoteInterval.maj6,
-        NoteInterval.maj7
-      ])
-  end
-  
-  def self.natural_minor_scale(root_note)
-    Scale.new(root_note,
-      [
-        NoteInterval.unison,
-        NoteInterval.maj2,
-        NoteInterval.min3,
-        NoteInterval.per4,
-        NoteInterval.per5,
-        NoteInterval.min6,
-        NoteInterval.min7
-        ])
-  end
-
-  def self.harmonic_minor_scale(root_note)
-    Scale.new(root_note,
-      [
-        NoteInterval.unison,
-        NoteInterval.maj2,
-        NoteInterval.min3,
-        NoteInterval.per4,
-        NoteInterval.per5,
-        NoteInterval.min6,
-        NoteInterval.maj7
-        ])
-  end
-
-  def self.melodic_minor_scale(root_note)
-    Scale.new(root_note,
-      [
-        NoteInterval.unison,
-        NoteInterval.maj2,
-        NoteInterval.min3,
-        NoteInterval.per4,
-        NoteInterval.per5,
-        NoteInterval.maj6,
-        NoteInterval.maj7
-        ])
-  end
-
+    
   def interval_for_degree(pos)
     count = @intervals.size
     octaves = (pos - 1) / count
@@ -74,7 +18,6 @@ class Scale < RootNoteWithIntervals
   end
     
   def all_degree_triads
-    #[1,2,3,4,5,6,7].map{|d| self.degree_triad(d)}
     (1..@intervals.size).to_a.map{|d| self.degree_triad(d)}
   end
   
