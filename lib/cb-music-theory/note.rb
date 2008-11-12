@@ -109,12 +109,47 @@ class Note
      Scale.new(self,NoteInterval.melodic_minor_set)
    end
   
-  def chord_methods
-    self.methods.select{|m| m =~ Regexp.new(/chord$/)}
+  
+  
+   def whole_tone_scale
+     Scale.new(self,NoteInterval.whole_tone_set)
+   end
+
+   def diminished_scale
+     Scale.new(self,NoteInterval.diminished_set)
+   end
+
+   def major_pentatonic_scale
+     Scale.new(self,NoteInterval.major_pentatonic_set)
+   end
+
+   def minor_pentatonic_scale
+     Scale.new(self,NoteInterval.minor_pentatonic_set)
+   end
+
+   def enigmatic_scale
+     Scale.new(self,NoteInterval.enigmatic_set)
+   end
+
+   def major_neapolitan_scale
+     Scale.new(self,NoteInterval.major_neapolitan_set)
+   end
+
+   def minor_neapolitan_scale
+     Scale.new(self,NoteInterval.minor_neapolitan_set)
+   end
+
+   def minor_hungarian_scale
+     Scale.new(self,NoteInterval.minor_hungarian_set)
+   end
+
+
+  def self.chord_methods
+    Note.instance_methods.select{|m| m =~ Regexp.new(/chord$/)}
   end
   
-  def scale_methods
-    self.methods.select{|m| m =~ Regexp.new(/scale$/)}
+  def self.scale_methods
+    Note.instance_methods.select{|m| m =~ Regexp.new(/scale$/)}
   end
   
   def major_chord
