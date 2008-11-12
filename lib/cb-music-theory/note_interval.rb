@@ -134,39 +134,39 @@ class NoteInterval
   end
   
   def self.ionian_set
-    [0,2,4,5,7,9,11].map{|n| NoteInterval.new(n)}
+    [0, 2, 4, 5, 7, 9, 11].map{|n| NoteInterval.new(n)}
   end
   
   def self.dorian_set
-    self.shift_set(NoteInterval.ionian_set)
+    [0, 2, 3, 5, 7, 9, 10].map{|n| NoteInterval.new(n)}    
   end
   
   def self.phrygian_set
-    self.shift_set(NoteInterval.dorian_set)
+    [0, 1, 3, 5, 7, 8, 10].map{|n| NoteInterval.new(n)}
   end
   
   def self.lydian_set
-    self.shift_set(NoteInterval.phrygian_set)
+    [0, 2, 4, 6, 7, 9, 11].map{|n| NoteInterval.new(n)}
   end
   
   def self.mixolydian_set
-    self.shift_set(NoteInterval.lydian_set)
+    [0, 2, 4, 5, 7, 9, 10].map{|n| NoteInterval.new(n)}
   end
     
   def self.aeolian_set
-    self.shift_set(NoteInterval.mixolydian_set)
+    [0, 2, 3, 5, 7, 8, 10].map{|n| NoteInterval.new(n)}
   end
   
   def self.locrian_set
-    self.shift_set(NoteInterval.aeolian_set)
+     [0, 1, 3, 5, 6, 8, 10].map{|n| NoteInterval.new(n)}
   end
       
   def self.harmonic_minor_set
-    [0,2,3,5,7,8,11].map{|n| NoteInterval.new(n)}
+    [0, 2, 3, 5, 7, 8, 11].map{|n| NoteInterval.new(n)}
   end
   
   def self.melodic_minor_set
-    [0,2,3,5,7,9,11].map{|n| NoteInterval.new(n)}
+    [0, 2, 3, 5, 7, 9, 11].map{|n| NoteInterval.new(n)}
   end    
       
 end

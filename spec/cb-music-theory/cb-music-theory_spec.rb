@@ -18,8 +18,35 @@ describe Note do
 end
 
 
-describe Chord do
+describe NoteInterval do
   
+  it "dorian set should equal a shifted ionian set" do
+      NoteInterval.dorian_set.map{|i| i.value}.should == NoteInterval.shift_set(NoteInterval.ionian_set).map{|i| i.value}
+  end
+  
+  it "phrygian mode should equal shifted dorian mode" do
+    NoteInterval.phrygian_set.map{|i| i.value}.should == NoteInterval.shift_set(NoteInterval.dorian_set).map{|i| i.value}
+  end
+
+  it "lydian mode should equal shifted phrygian mode" do
+    NoteInterval.lydian_set.map{|i| i.value}.should == NoteInterval.shift_set(NoteInterval.phrygian_set).map{|i| i.value}
+  end
+
+  it "mixolydian mode should equal shifted lydian mode" do
+    NoteInterval.mixolydian_set.map{|i| i.value}.should == NoteInterval.shift_set(NoteInterval.lydian_set).map{|i| i.value}
+  end
+
+  it "aeolian mode should equal shifted mixolydian mode" do
+    NoteInterval.aeolian_set.map{|i| i.value}.should == NoteInterval.shift_set(NoteInterval.mixolydian_set).map{|i| i.value}
+  end
+
+  it "locrian mode should equal shifted aeolian mode" do
+    NoteInterval.locrian_set.map{|i| i.value}.should == NoteInterval.shift_set(NoteInterval.aeolian_set).map{|i| i.value}
+  end
+end
+
+
+describe Chord do
   it "should produce a major chord" do
     Note.new("C").major_chord.note_names.should == ["C", "E", "G"]
   end
@@ -31,8 +58,6 @@ describe Chord do
     c2.note_names.sort.should == c1.note_names.sort
     c3.note_names.sort.should == c2.note_names.sort
   end
-  
-    
 end
 
 describe Scale do
@@ -66,7 +91,8 @@ describe Scale do
   it "should produce a correct A melodic minor scale" do
     Note.new("A").melodic_minor_scale.note_names.should == ["A", "B", "C", "D", "E", "F#", "G#"]
   end
-  
+
+
 
 
 end
