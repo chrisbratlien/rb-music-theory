@@ -1,5 +1,13 @@
 h1. cb-music-theory
 
+h2. Install
+
+<pre><code>
+  cd cb-music-theory
+  rake gem
+  rake install
+</code></pre>
+
 h2. Overview
 
 Basic twelve-tone music theory including notes, note intervals, scales, chords
@@ -101,8 +109,7 @@ h4. Chords
 
 
 I found <a href="http://www.harmony-central.com/Guitar/chord-and-theory-chart.txt">several</a> <a href="http://jmdl.com/howard/music/quick_crd_ref.html">references</a> on the Internet for selecting 
-NoteIntervals for common chords.
-
+NoteIntervals for common chords.  
 <pre><code>
   irb(main):001:0> Note.new("C").major_chord
   => #<Chord:0x267a834 @intervals=[#<NoteInterval:0x267a71c @value=0>, #<NoteInterval:0x267a708 @value=4>, #<NoteInterval:0x267a6f4 @value=7>], @root_note=#<Note:0x267a870 @value=60>>
@@ -129,14 +136,15 @@ h4. Chord Inversions
   => #<Chord:0x28793c4 @intervals=[#<NoteInterval:0x287934c @value=0>, #<NoteInterval:0x2879338 @value=4>, #<NoteInterval:0x2879324 @value=7>], @root_note=#<Note:0x2879374 @value=72>>
 </code></pre>
 
-h4. Harmonized Scales 
+h4. Harmonized Chord-Scales 
 
-Moving an in-key chord built on degree 1 up the scale, building that chord shape again and again on each
-degree while adjusting the shape to remain in-key.
+While I find this very useful, it's also hard to explain.  So please 
+watch the following <a href="http://www.youtube.com/watch?v=fjDGl4GJosI">YouTube Video</a>
 
-There's an example of this is the following <a href="http://www.youtube.com/watch?v=fjDGl4GJosI">YouTube Video</a>
+Given a Scale, you may describe a Chord, by its degrees, to be "walked" up the scale such that
+only Notes in that Scale are used.
 
-As in that video, I'm also specifying a maj7 chord by using the degrees [1,3,5,7]
+As in that YouTube video, I'll demonstrate a maj7 chord by using the degrees [1,3,5,7]
 
 harmonized_chord(start_degree,degrees) => Chord
 <pre><code>

@@ -152,6 +152,18 @@ class Note
     Note.instance_methods.select{|m| m =~ Regexp.new(/scale$/)}
   end
   
+  def self.random_scale_method
+    (Note.scale_methods - ["chromatic_scale"]).pick
+  end
+  
+  def self.random_chord_method
+    Note.chord_methods.pick
+  end
+
+  def self.random_chord_or_scale_method
+    [Note.random_chord_method,Note.random_scale_method].pick
+  end
+  
   def major_chord
     Chord.new(self,[NoteInterval.unison,NoteInterval.maj3,NoteInterval.per5])
   end
