@@ -17,7 +17,7 @@ class NoteInterval
 
   def short_name
     names = ["1", "b2", "2", "b3", "3", "4", "b5", "5", "#5", "6", "b7", "7",
-             "8", "b9", "9", "#9","10","11","#11","12","b13","13","#13"][@value]
+             "8", "b9", "9", "#9","10","11","#11","12","b13","13","#13","14","15"][@value]
   end
     
   def plus_interval(interval)
@@ -42,6 +42,23 @@ class NoteInterval
   end
   alias - minus_interval
   
+  
+  def lt(other_interval)
+    self.value < other_interval.value
+  end
+  alias < lt
+  
+  def gt(other_interval)
+    self.value > other_interval.value
+  end
+  alias > gt
+  
+
+  def lte(other_interval)
+    self.value <= other_interval.value
+  end
+  alias <= lte
+
   def self.unison
     NoteInterval.new(0)
   end
@@ -123,11 +140,28 @@ class NoteInterval
   end
 
 
-  def self.shift_set(set)
-    result = set[1..-1] << set[0] + 12
-    result.map{|n| n - result[0]}
+  def self.zero_set(set)
+    set.map{|n| n - set[0]}
   end
   
+  def self.shift_set(set)
+    set[1..-1] << set[0] + 12
+  end
+  
+  def self.shift_to_top(set)
+    n = set[0]
+    top = set[-1]
+    while n <= top
+      n += 12
+    end
+    
+    set[1..-1] << n
+  end
+  
+  
+  def self.shift_and_zero_set(set)
+    NoteInterval.zero_set(NoteInterval.shift_set(set))
+  end
   
   def self.chromatic_set
     (0..11).to_a.map{|n| NoteInterval.new(n)}
