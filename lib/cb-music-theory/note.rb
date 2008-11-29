@@ -127,6 +127,10 @@ class Note
      Scale.new(self,NoteInterval.minor_pentatonic_set)
    end
 
+   def minor_major_pentatonic_scale
+     Scale.new(self,NoteInterval.minor_major_pentatonic_set)
+   end
+   
    def enigmatic_scale
      Scale.new(self,NoteInterval.enigmatic_set)
    end

@@ -30,5 +30,8 @@ class Scale < RootNoteWithIntervals
     (1..@intervals.size).to_a.map{|d| self.harmonized_chord(d,degrees)}
   end
   
+  
+  def valid_chord_names_for_degree(d)
+    Note.chord_methods.select{|m| self.contains?(self.degree(d).send(m)) }
+  end
 end
-

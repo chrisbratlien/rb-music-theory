@@ -75,6 +75,18 @@ class RootNoteWithIntervals
   end
     
   alias invert invert_to_top
+ 
+ def contains?(other)
+   if other.kind_of?(Note)
+     self.note_names.to_set.superset?(Set.new(other.name))
+   else
+     self.note_names.to_set.superset?(other.note_names.to_set)
+   end
+ end
+  
+ def contained_by?(other)
+   other.contains?(self)
+ end
   
 end
  

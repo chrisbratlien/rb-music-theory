@@ -218,6 +218,10 @@ class NoteInterval
   def self.minor_pentatonic_set
     [0, 3, 5, 7, 10].map{|n| NoteInterval.new(n)}
   end    
+  
+  def self.minor_major_pentatonic_set
+    [0,2,3,4,5,7,9,10].map{|n| NoteInterval.new(n)}
+  end
 
   def self.enigmatic_set
     [0,1,4,6,8,10,11].map{|n| NoteInterval.new(n)}
