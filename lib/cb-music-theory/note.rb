@@ -1,8 +1,6 @@
 
-class Note
+class Note < ValuePrimitive
   
-  attr_reader :value
-
   def self.twelve_tones
     ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
   end
@@ -19,9 +17,6 @@ class Note
     end
   end
 
-  def ==(other_note)
-    @value == other_note.value
-  end
   
   def self.value_from_name(name)
     #The octave isn't supplied, so 
@@ -33,31 +28,9 @@ class Note
   def self.name_from_value(v)
     Note.twelve_tones[v % 12]
   end
-  
-  def plus_interval(interval)
-    if interval.kind_of?(Fixnum)
-      Note.new(@value + interval)
-    elsif interval.kind_of?(NoteInterval)
-      Note.new(@value + interval.value)
-    else
-      raise TypeError, "argument must be Fixnum or NoteInterval"
-    end
-  end
-  alias + plus_interval
 
-  def minus_interval(interval)
-    if interval.kind_of?(Fixnum)
-      Note.new(@value - interval)
-    elsif interval.kind_of?(NoteInterval)
-      Note.new(@value - interval.value)
-    else
-      raise TypeError, "argument must be Fixnum or NoteInterval"
-    end
-  end
-  alias - minus_interval
-
-  def distance_to(interval)
-    interval.value - @value
+  def distance_to(other)
+    other.value - @value
   end
 
   def octave
@@ -108,9 +81,7 @@ class Note
    def melodic_minor_scale
      Scale.new(self,NoteInterval.melodic_minor_set)
    end
-  
-  
-  
+
    def whole_tone_scale
      Scale.new(self,NoteInterval.whole_tone_set)
    end
@@ -169,7 +140,7 @@ class Note
   end
   
   def major_chord
-    Chord.new(self,[NoteInterval.unison,NoteInterval.maj3,NoteInterval.per5])
+    Chord.new(self,SortedSet.new([NoteInterval.unison,NoteInterval.maj3,NoteInterval.per5].to_set))
   end
   
   def minor_chord

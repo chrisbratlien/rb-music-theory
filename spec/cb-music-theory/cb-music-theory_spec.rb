@@ -45,6 +45,9 @@ describe NoteInterval do
   end
 end
 
+describe RootNoteWithIntervals do
+  
+end
 
 describe Chord do
   it "should produce a major chord" do
@@ -58,9 +61,18 @@ describe Chord do
     c2.note_names.sort.should == c1.note_names.sort
     c3.note_names.sort.should == c2.note_names.sort
   end
-  
-  
-  
+
+  it "should remove a note" do
+    Note.new("C").major_chord.remove_note(Note.new("C")).note_names.should == ["E","G"]
+  end
+    
+  it "should add a note" do
+    Note.new("C").major_chord.add_note(Note.new("B")).note_names.should == ["C","E","G","B"]
+  end
+
+  it "should add 2 chords" do
+    (Note.new("C").maj7_chord + Note.new("D").minor_chord).notes.should == Note.new("C").major_scale.notes
+  end
 end
 
 describe Scale do
@@ -114,8 +126,10 @@ describe Scale do
   end
   
   
+ it "should subtract a chord" do
+   
+   (Note.new("C").major_scale - Note.new("C").major_chord).note_names.should == ["D","F","A","B"]
 
-
-
+ end
 
 end

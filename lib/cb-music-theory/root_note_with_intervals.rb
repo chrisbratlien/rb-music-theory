@@ -1,10 +1,16 @@
+require 'set'
+
 class RootNoteWithIntervals
   
   attr_reader :root_note, :intervals
  
  def initialize(root_note,intervals)
    @root_note = root_note
-   @intervals = intervals
+   if intervals.kind_of?(Array)
+     @intervals = SortedSet.new(intervals.to_set)
+   elsif intervals.kind_of?(Set)
+     @intervals = SortedSet.new(intervals)
+   end
  end
  
  def notes
@@ -32,22 +38,62 @@ class RootNoteWithIntervals
    @intervals.map{|i| [i,@root_note.plus_interval(i)]}
  end
 
- def add_intervals(more)
-   sorted = (@intervals + more).uniq.sort{|a,b| a.value <=> b.value}
-   self.class.new(@root_note,sorted)
+ def add(more)
+   if more.kind_of?(Note)
+     add_note(more)
+   elsif more.kind_of?(NoteInterval)
+     self.class.new(@root_note,@intervals + Set.new([more].to_set))
+    elsif more.kind_of?(RootNoteWithIntervals)
+      add_similar(more)
+   else
+     self.class.new(@root_note,@intervals + Set.new(more))
+   end
  end
+ alias + add
+ alias add_intervals add
+ alias add_interval add
 
- def add_interval(i)
-   add_intervals([i])
+def add_note(note)
+  self.class.new(@root_note,@intervals + Set.new([NoteInterval.new(@root_note.distance_to(note))].to_set))
+end
+
+def add_similar(other)
+  self.class.new(@root_note,@intervals + other.notes.map{|n| NoteInterval.new(@root_note.distance_to(n))}.to_set )
+end
+
+
+ #def add_interval(i)
+#   add_intervals([i].to_set)
+# end
+
+ def remove(less)
+   if less.kind_of?(Note)
+     remove_note(less)
+   elsif less.kind_of?(NoteInterval)
+     self.class.new(@root_note,@intervals - Set.new([less].to_set))
+   elsif less.kind_of?(RootNoteWithIntervals)
+     remove_similar(less)
+   else
+     self.class.new(@root_note,@intervals - Set.new(less))
+   end
  end
-
- def remove_intervals(less)
-   self.class.new(@root_note,@intervals - less)
+ alias - remove
+ alias remove_intervals remove
+ alias remove_interval remove
+ 
+ 
+ def remove_note(note)
+   self.class.new(@root_note,@intervals.reject{|i| @root_note + i == note})
  end
  
- def remove_interval(i)
-   remove_intervals([i])
+ def remove_similar(other)
+   self.class.new(@root_note,@intervals.reject{|i| other.contains?(@root_note + i)})
  end
+ 
+ 
+ #def remove_interval(i)
+#   remove_intervals([i])
+# end
 
  def replace_interval(o,n)
    remove_interval(o).add_interval(n)
@@ -67,11 +113,11 @@ class RootNoteWithIntervals
   end
 
   def invert_once
-    self.class.new(@root_note,NoteInterval.shift_set(@intervals))
+    self.class.new(@root_note,NoteInterval.shift_set(@intervals.to_a))
   end
   
   def invert_to_top
-    self.class.new(@root_note,NoteInterval.shift_to_top(@intervals))
+    self.class.new(@root_note,NoteInterval.shift_to_top(@intervals.to_a))
   end
     
   alias invert invert_to_top

@@ -1,5 +1,6 @@
 dir = File.dirname(__FILE__) + '/cb-music-theory'
 require dir + '/core_ext/array'
+require dir + '/value_primitive'
 require dir + '/note'
 require dir + '/note_interval'
 require dir + '/root_note_with_intervals'

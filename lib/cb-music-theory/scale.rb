@@ -5,7 +5,7 @@ class Scale < RootNoteWithIntervals
     octaves = (pos - 1) / count
     degrees = pos % count
     total_interval = NoteInterval.new(octaves*12)
-    total_interval = total_interval.plus_interval(@intervals[degrees-1])
+    total_interval = total_interval.plus_interval(@intervals.to_a[degrees-1])
   end
     
   def degree(pos)
