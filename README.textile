@@ -2,10 +2,17 @@ h1. cb-music-theory
 
 h2. Install
 
+At the shell:
 <pre><code>
-  cd cb-music-theory
-  rake gem
-  rake install
+  # git clone git://github.com/chrisbratlien/cb-music-theory.git 
+  # cd cb-music-theory
+  # rake gem
+  # rake install
+</code></pre>
+
+In your Ruby code:
+<pre><code>
+  require 'cb-music-theory'
 </code></pre>
 
 h2. Overview

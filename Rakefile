@@ -12,7 +12,6 @@ RUBY_FORGE_PROJECT = "cb-music-theory"
 GEM_AUTHOR = "Chris Bratlien"
 GEM_EMAIL = "chrisbratlien@gmail.com"
 GEM_NAME = "cb-music-theory"
-GEM_VERSION = "0.1"
 GEM_CLEAN = ["log", "pkg"]
 GEM_EXTRAS = { :has_rdoc => true, :extra_rdoc_files => %w[ README.textile LICENSE TODO ] }
  

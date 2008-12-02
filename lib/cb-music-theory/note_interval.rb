@@ -44,49 +44,109 @@ module CBMusicTheory
       :maj14 => 23
     }
 
-      INTERVAL_NAMES.each do |method_name,value|
-         self.class.send :define_method, method_name.to_sym do
-           if value.kind_of?(Symbol)
-             NoteInterval.new(INTERVAL_NAMES[value])
-           else
-             NoteInterval.new(value)
-           end
-         end
-       end
+   SCALE_SETS = {
+     :chromatic               => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+     :ionian                  => [0, 2, 4, 5, 7, 9, 11],
+     :major                   => :ionian,
+     :dorian                  => [0, 2, 3, 5, 7, 9, 10],
+     :phrygian                => [0, 1, 3, 5, 7, 8, 10],
+     :lydian                  => [0, 2, 4, 6, 7, 9, 11],
+     :mixolydian              => [0, 2, 4, 5, 7, 9, 10],
+     :aeolian                 => [0, 2, 3, 5, 7, 8, 10],
+     :natural_minor           => :aeolian,
+     :locrian                 => [0, 1, 3, 5, 6, 8, 10],
+     :harmonic_minor          => [0, 2, 3, 5, 7, 8, 11],
+     :melodic_minor           => [0, 2, 3, 5, 7, 9, 11],
+     :whole_tone              => [0, 2, 4, 6, 8, 10],
+     :diminished              => [0, 2, 3, 5, 6, 8, 9, 11],
+     :major_pentatonic        => [0, 2, 4, 7, 9],
+     :minor_pentatonic        => [0, 3, 5, 7, 10],
+     :minor_major_pentatonic  => [0, 2, 3, 4, 5, 7, 9, 10],
+     :enigmatic               => [0, 1, 4, 6, 8, 10, 11],
+     :major_neapolitan        => [0, 1, 3, 5, 7, 9, 11],
+     :minor_neapolitan        => [0, 1, 3, 5, 7, 8, 11],
+     :minor_hungarian         => [0, 2, 3, 6, 7, 8, 11]
+   }
 
+   CHORD_SETS = {
+      :major    => [0,4,7],
+      :maj7     => [0,4,7,11],
+      :maj9     => [0,4,7,11,14],
+      :maj11    => [0,4,7,11,14,17],
+            
+      :maj_add2 => [0,2,4,7],
+      :maj_add4 => [0,4,5,7],
+      :maj_add9 => [0,4,7,14],
+      :add2     => :maj_add2,
+      :add4     => :maj_add4,
+      :add9     => :maj_add9,
 
- 
-   SCALE_ARRAYS = {
-     :chromatic_set               => (0..11).to_a,
-     :ionian_set                  => [0,2,4,5,7,9,11],
-     :major_set                   => :ionian_set,
-     :dorian_set                  => [0, 2, 3, 5, 7, 9, 10],
-     :phrygian_set                => [0, 1, 3, 5, 7, 8, 10],
-     :lydian_set                  => [0, 2, 4, 6, 7, 9, 11],
-     :mixolydian_set              => [0, 2, 4, 5, 7, 9, 10],
-     :aeolian_set                 => [0, 2, 3, 5, 7, 8, 10],
-     :natural_minor_set           => :aeolian_set,
-     :locrian_set                 => [0, 1, 3, 5, 6, 8, 10],
-     :harmonic_minor_set          => [0, 2, 3, 5, 7, 8, 11],
-     :melodic_minor_set           => [0, 2, 3, 5, 7, 9, 11],
-     :whole_tone_set              => [0, 2, 4, 6, 8, 10],
-     :diminished_set              => [0, 2, 3, 5, 6, 8, 9, 11],
-     :major_pentatonic_set        => [0, 2, 4, 7, 9],
-     :minor_pentatonic_set        => [0, 3, 5, 7, 10],
-     :minor_major_pentatonic_set  => [0,2,3,4,5,7,9,10],
-     :enigmatic_set               => [0,1,4,6,8,10,11],
-     :major_neapolitan_set        => [0,1,3,5,7,9,11],
-     :minor_neapolitan_set        => [0,1,3,5,7,8,11],
-     :minor_hungarian_set         => [0,2,3,6,7,8,11]
+      :minor      => [0,3,7],
+      :min6       => [0,3,7,9],
+      :min7       => [0,3,7,10],
+      :minmaj7    => [0,3,7,11],
+      :min9       => [0,3,7,10,14],
+      :min11      => [0,3,7,10,14,17],
+      :min13      => [0,3,7,10,14,17,21],
+      :min7_flat5 => [0,3,6,10],
+      :min7_b5    => :min7_flat5,
+
+      :aug      => [0,4,8],
+
+      :dim      => [0,3,6],
+      :dim7     => [0,3,6,9],
+      :half_dim => [0,3,6,10],
+
+      :sixth    => [0,4,7,9],
+      :six_nine => [0,4,7,9,14],
+
+      :seventh        => [0,4,7,10], 
+      :dom7           => :seventh,
+      :ninth          => [0,4,7,10,14],
+      :eleventh       => [0,4,7,10,14,17],
+      :thirteenth     => [0,4,7,10,14,17,21],
+      
+      :seventh_sharp9 => [0,4,7,10,15],
+      :seventh_flat9  => [0,4,7,10,13],
+      :seventh_b9     => :seventh_flat9,
+      :seventh_sharp5 => [0,4,8,10],
+      :seventh_flat5  => [0,4,6,10],
+      :seventh_b5     => :seventh_flat5,
+
+      :seventh_sus2 => [0,2,7,10],
+      :seventh_sus4 => [0,5,7,10],
+
+      :fifth =>  [0,7],
+      :sus2 =>   [0,2,7],
+      :sus4 =>   [0,5,7],
    }
  
-   SCALE_ARRAYS.each do |method_name,value|
-      self.class.send :define_method, method_name.to_sym do
-        if value.kind_of?(Symbol)
-          SCALE_ARRAYS[value].map{|n| NoteInterval.new(n)}
-        else
-          value.map{|n| NoteInterval.new(n)}
-        end
+   def self.locate_it(key,set)
+     result = set[key]
+     if result.kind_of?(Symbol)
+       NoteInterval.locate_it(result,set)
+     else
+       result
+     end
+   end
+
+   INTERVAL_NAMES.each do |symbol,value|
+      self.class.send :define_method, symbol.to_sym do
+        NoteInterval.new(NoteInterval.locate_it(symbol,INTERVAL_NAMES))
+      end
+    end
+
+   SCALE_SETS.each do |symbol,value|     
+     full_method_name = (symbol.to_s + '_set').to_sym     
+      self.class.send :define_method, full_method_name.to_sym do
+        NoteInterval.locate_it(symbol,SCALE_SETS).map{|n| NoteInterval.new(n)}
+      end
+    end
+    
+   CHORD_SETS.each do |symbol,value|     
+     full_method_name = (symbol.to_s + '_chord').to_sym     
+      self.class.send :define_method, full_method_name.to_sym do
+        NoteInterval.locate_it(symbol,CHORD_SETS).map{|n| NoteInterval.new(n)}
       end
     end
  
@@ -114,6 +174,5 @@ module CBMusicTheory
       NoteInterval.zero_set(NoteInterval.shift_set(set))
     end
   
-
   end
 end

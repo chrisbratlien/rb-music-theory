@@ -1,6 +1,24 @@
 module CBMusicTheory
   
   class Note < ValuePrimitive
+
+    # define a bunch of scale instance methods  (ex: Note.major_scale)
+    NoteInterval::SCALE_SETS.each do |symbol,value|
+      method_name = symbol.to_s + '_scale'
+      Note.send :define_method, method_name.to_sym do
+        intervals = NoteInterval.locate_it(symbol,NoteInterval::SCALE_SETS).map{|n| NoteInterval.new(n)}          
+        Scale.new(self,intervals)
+      end
+    end
+
+    # define a bunch of chord instance methods  (ex: Note.min7_chord)
+    NoteInterval::CHORD_SETS.each do |symbol,value|
+      method_name = symbol.to_s + '_chord'
+      Note.send :define_method, method_name.to_sym do          
+        intervals = NoteInterval.locate_it(symbol,NoteInterval::CHORD_SETS).map{|n| NoteInterval.new(n)}          
+        Chord.new(self,intervals)
+      end
+    end
   
     def self.twelve_tones
       ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"]
@@ -40,85 +58,7 @@ module CBMusicTheory
   
     def name
       Note.name_from_value(@value)
-    end
-    
-    def chromatic_scale
-       Scale.new(self,NoteInterval.chromatic_set)
-     end
-
-     def major_scale
-       Scale.new(self,NoteInterval.ionian_set)
-     end
-
-     def dorian_scale
-       Scale.new(self,NoteInterval.dorian_set)
-     end
-
-     def phrygian_scale
-       Scale.new(self,NoteInterval.phrygian_set)
-     end
-
-     def lydian_scale
-       Scale.new(self,NoteInterval.lydian_set)
-     end
-
-     def mixolydian_scale
-       Scale.new(self,NoteInterval.mixolydian_set)
-     end
-
-     def aeolian_scale
-       Scale.new(self,NoteInterval.aeolian_set)
-     end
-     alias natural_minor_scale aeolian_scale
-
-     def locrian_scale
-       Scale.new(self,NoteInterval.locrian_set)
-     end
-
-     def harmonic_minor_scale
-       Scale.new(self,NoteInterval.harmonic_minor_set)
-     end
-
-     def melodic_minor_scale
-       Scale.new(self,NoteInterval.melodic_minor_set)
-     end
-
-     def whole_tone_scale
-       Scale.new(self,NoteInterval.whole_tone_set)
-     end
-
-     def diminished_scale
-       Scale.new(self,NoteInterval.diminished_set)
-     end
-
-     def major_pentatonic_scale
-       Scale.new(self,NoteInterval.major_pentatonic_set)
-     end
-
-     def minor_pentatonic_scale
-       Scale.new(self,NoteInterval.minor_pentatonic_set)
-     end
-
-     def minor_major_pentatonic_scale
-       Scale.new(self,NoteInterval.minor_major_pentatonic_set)
-     end
-   
-     def enigmatic_scale
-       Scale.new(self,NoteInterval.enigmatic_set)
-     end
-
-     def major_neapolitan_scale
-       Scale.new(self,NoteInterval.major_neapolitan_set)
-     end
-
-     def minor_neapolitan_scale
-       Scale.new(self,NoteInterval.minor_neapolitan_set)
-     end
-
-     def minor_hungarian_scale
-       Scale.new(self,NoteInterval.minor_hungarian_set)
-     end
-
+    end    
 
     def self.chord_methods
       Note.instance_methods.select{|m| m =~ Regexp.new(/chord$/)}
@@ -138,143 +78,6 @@ module CBMusicTheory
 
     def self.random_chord_or_scale_method
       [Note.random_chord_method,Note.random_scale_method].pick
-    end
-  
-    def major_chord
-      Chord.new(self,SortedSet.new([NoteInterval.unison,NoteInterval.maj3,NoteInterval.per5].to_set))
-    end
-  
-    def minor_chord
-      Chord.new(self,[NoteInterval.unison,NoteInterval.min3,NoteInterval.per5])
-    end
-  
-    def dim_chord
-      Chord.new(self,[NoteInterval.unison,NoteInterval.min3,NoteInterval.dim5])
-    end
-  
-    def aug_chord
-      Chord.new(self,[NoteInterval.unison,NoteInterval.maj3,NoteInterval.sharp5])
-    end
-      
-    def fifth_chord
-      Chord.new(self,[NoteInterval.unison,NoteInterval.per5])
-    end
-    
-    def sus2_chord
-      fifth_chord.add_interval(NoteInterval.maj2)
-    end
-
-    def sus4_chord
-      fifth_chord.add_interval(NoteInterval.per4)
-    end
-  
-    def dim7_chord
-      dim_chord.add_interval(NoteInterval.bb7)
-    end
-  
-    def half_dim_chord
-      dim_chord.add_interval(NoteInterval.b7)
-    end
-  
-    def seventh_chord
-      major_chord.add_interval(NoteInterval.b7)
-    end
-    alias dom7_chord seventh_chord
-  
-    def min7_chord
-      minor_chord.add_interval(NoteInterval.min7)
-    end
-
-    def maj7_chord
-      major_chord.add_interval(NoteInterval.maj7)
-    end
-    
-    def minmaj7_chord
-      minor_chord.add_interval(NoteInterval.maj7)
-    end
-
-    def seventh_sus2_chord
-      sus2_chord.add_interval(NoteInterval.b7)
-    end
-
-    def seventh_sus4_chord
-      sus4_chord.add_interval(NoteInterval.b7)
-    end
-  
-    def add2_chord
-      major_chord.add_interval(NoteInterval.maj2)
-    end
-  
-    def add9_chord
-      major_chord.add_interval(NoteInterval.maj9)
-    end
-  
-    def add4_chord
-      major_chord.add_interval(NoteInterval.per4)
-    end
-  
-    def sixth_chord
-      major_chord.add_interval(NoteInterval.maj6)
-    end
-  
-    def min6_chord
-      minor_chord.add_interval(NoteInterval.maj6)
-    end
-  
-    def six_nine_chord
-      sixth_chord.add_interval(NoteInterval.maj9)
-    end
-  
-    def ninth_chord
-      seventh_chord.add_interval(NoteInterval.maj9)
-    end
-  
-    def min9_chord
-      min7_chord.add_interval(NoteInterval.maj9)
-    end
-  
-    def maj9_chord
-      maj7_chord.add_interval(NoteInterval.maj9)
-    end
-  
-    def eleventh_chord
-      ninth_chord.add_interval(NoteInterval.maj11)
-    end
-  
-    def min11_chord
-      min9_chord.add_interval(NoteInterval.maj11)
-    end
-
-    def maj11_chord
-      maj9_chord.add_interval(NoteInterval.maj11)
-    end
-
-    def thirteenth_chord
-      eleventh_chord.add_interval(NoteInterval.maj13)
-    end
-  
-    def min13_chord
-      min11_chord.add_interval(NoteInterval.maj13)
-    end
-  
-    def maj13_chord
-      maj11_chord.add_interval(NoteInterval.maj13)
-    end
-  
-    def seventh_sharp9_chord
-      seventh_chord.add_interval(NoteInterval.sharp9)
-    end
-
-    def seventh_b9_chord
-      seventh_chord.add_interval(NoteInterval.b9)
-    end
-
-    def seventh_sharp5_chord
-      seventh_chord.replace_interval(NoteInterval.per5,NoteInterval.sharp5)
-    end
-
-    def seventh_b5_chord
-      seventh_chord.replace_interval(NoteInterval.per5,NoteInterval.b5)
     end
 
   end

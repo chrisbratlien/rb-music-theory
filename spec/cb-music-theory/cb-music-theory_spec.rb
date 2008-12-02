@@ -21,7 +21,8 @@ end
 describe NoteInterval do
   
   it "dorian set should equal a shifted ionian set" do
-      NoteInterval.dorian_set.map{|i| i.value}.should == NoteInterval.shift_and_zero_set(NoteInterval.ionian_set).map{|i| i.value}
+      NoteInterval.dorian_set.map{|i| i.value}.should == 
+      NoteInterval.shift_and_zero_set(NoteInterval.ionian_set).map{|i| i.value}
   end
   
   it "phrygian mode should equal shifted dorian mode" do
