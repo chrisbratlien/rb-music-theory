@@ -1,3 +1,5 @@
-class Chord < RootNoteWithIntervals
+module CBMusicTheory
+  class Chord < RootNoteWithIntervals
   
-end  
+  end  
+end
