@@ -9,3 +9,5 @@ require dir + '/scale'
 require dir + '/experimental_scales'
 require dir + '/instrument/guitar/guitar_string'
 require dir + '/instrument/guitar/guitar'
+
+include CBMusicTheory
