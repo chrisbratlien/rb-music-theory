@@ -14,7 +14,7 @@ module CBMusicTheory
     end
 
     def note_at_fret(num)
-      @open_note.plus_interval(NoteInterval.new(num))
+      @open_note + num
     end
   
     def interval_at_fret(num)
@@ -33,6 +33,7 @@ module CBMusicTheory
         end
       }
     end
+        
   
     def fret_these_notes(notes)
       notes.each{|n| fret_this_note(n)}

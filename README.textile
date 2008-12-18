@@ -143,40 +143,55 @@ h4. Chord Inversions
   => #<Chord:0x28793c4 @intervals=[#<NoteInterval:0x287934c @value=0>, #<NoteInterval:0x2879338 @value=4>, #<NoteInterval:0x2879324 @value=7>], @root_note=#<Note:0x2879374 @value=72>>
 </code></pre>
 
+
+h4. Valid Chords for Scale Degrees
+<pre><code>
+irb(main):001:0> Note.new("C").major_scale.valid_chord_names_for_degree(1)
+=> ["maj7_chord", "six_nine_chord", "add4_chord", "add2_chord", "sixth_chord", "maj11_chord", "maj_add2_chord", "maj_add9_chord", "major_chord", "sus4_chord", "maj_add4_chord", "fifth_chord", "sus2_chord", "maj9_chord", "add9_chord"]
+</code></pre>
+(some of these chord_names are synonyms, so there are duplicates)
+
+
 h4. Harmonized Chord-Scales 
 
-While I find this very useful, it's also hard to explain.  So please 
-watch the following <a href="http://www.youtube.com/watch?v=fjDGl4GJosI">YouTube Video</a>
-
-Given a Scale, you may describe a Chord, by its degrees, to be "walked" up the scale such that
+Given a Scale, you may describe a Chord to be "walked" up the scale such that
 only Notes in that Scale are used.
 
-As in that YouTube video, I'll demonstrate a maj7 chord by using the degrees [1,3,5,7]
+The idea is explained well in the following <a href="http://www.youtube.com/watch?v=fjDGl4GJosI">YouTube Video</a>
 
-harmonized_chord(start_degree,degrees) => Chord
+As in that YouTube video, I'll demonstrate by using :maj7_chord
+
+harmonized_chord(start_degree,chord_name) => Chord
 <pre><code>
-  irb(main):032:0> Note.new("C").major_scale.harmonized_chord(1,[1,3,5,7]).note_names
+  irb(main):005:0> Note.new("C").major_scale.harmonized_chord(1,:maj7_chord).note_names
   => ["C", "E", "G", "B"]
-  irb(main):033:0> Note.new("C").major_scale.harmonized_chord(2,[1,3,5,7]).note_names
+  irb(main):006:0> Note.new("C").major_scale.harmonized_chord(2,:maj7_chord).note_names
   => ["D", "F", "A", "C"]
-  irb(main):034:0> Note.new("C").major_scale.harmonized_chord(3,[1,3,5,7]).note_names
+  irb(main):007:0> Note.new("C").major_scale.harmonized_chord(3,:maj7_chord).note_names
   => ["E", "G", "B", "D"]
-  irb(main):035:0> Note.new("C").major_scale.harmonized_chord(4,[1,3,5,7]).note_names
+  irb(main):008:0> Note.new("C").major_scale.harmonized_chord(4,:maj7_chord).note_names
   => ["F", "A", "C", "E"]
-  irb(main):036:0> Note.new("C").major_scale.harmonized_chord(5,[1,3,5,7]).note_names
-  => ["G", "B", "D", "F"]  
+  irb(main):009:0> Note.new("C").major_scale.harmonized_chord(5,:maj7_chord).note_names
+  => ["G", "B", "D", "F"]
 </code></pre>
 
 Or do it all at once:
 
-all_harmonized_chords(degrees) => array of Chords
+all_harmonized_chords(chord_name) => array of Chords
 <pre><code>
-  irb(main):043:0> Note.new("C").major_scale.all_harmonized_chords([1,3,5,7]).map{|c| c.note_names}
+  irb(main):003:0> Note.new("C").major_scale.all_harmonized_chords(:maj7_chord).map{|c| c.note_names}
   => [["C", "E", "G", "B"], ["D", "F", "A", "C"], ["E", "G", "B", "D"], ["F", "A", "C", "E"], ["G", "B", "D", "F"], ["A", "C", "E", "G"], ["B", "D", "F", "A"]]
 </code></pre>
 
 Or, to get the MIDI note numbers instead of the note names
 <pre><code>
-  irb(main):044:0> Note.new("C").major_scale.all_harmonized_chords([1,3,5,7]).map{|c| c.note_values}
-  => [[60, 64, 67, 71], [62, 65, 69, 72], [64, 67, 71, 74], [65, 69, 72, 76], [67, 71, 74, 77], [69, 72, 76, 79], [71, 74, 77, 81]]
+  irb(main):004:0> Note.new("C").major_scale.all_harmonized_chords(:maj7_chord).map{|c| c.note_values}
+  => [[60, 64, 67, 71], [62, 65, 69, 72], [64, 67, 71, 74], [65, 69, 72, 76], [67, 71, 74, 77], [69, 72, 76, 79], [71, 74, 77, 81]] 
+</code></pre>
+
+Or, get your Phryg on
+<pre><code>  
+  irb(main):017:0> Note.new("C").phrygian_scale.all_harmonized_chords(:min7_chord).map{|c| c.note_names}
+  => [["C", "D#", "G", "A#"], ["C#", "F", "G#", "C"], ["D#", "G", "A#", "C#"], ["F", "G#", "C", "D#"], ["G", "A#", "C#", "F"], ["G#", "C", "D#", "G"], ["A#", "C#", "F", "G#"]]
+  irb(main):018:0>  
 </code></pre>

@@ -128,9 +128,21 @@ describe Scale do
   
   
  it "should subtract a chord" do
-   
    (Note.new("C").major_scale - Note.new("C").major_chord).note_names.should == ["D","F","A","B"]
-
+ end
+ 
+ it "should produce a harmonized scale when given a chord" do
+   Note.new("C").major_scale.all_harmonized_chords(:major_chord).map{|c| c.note_names}.should ==
+   [["C","E","G"],["D","F","A"],["E","G","B"],["F","A","C"],["G","B","D"],["A","C","E"],["B","D","F"]]
  end
 
+ it "should build the same chord when harmonizing a scale as when building that chord off the root note" do
+   Note.scale_methods.each{ |sn|
+     Note.new("C").send(sn).valid_chord_names_for_degree(1).each {|cn|
+       #puts sn + ' ' + cn
+        Note.new("C").send(sn).harmonized_chord(1,cn).note_names.should == Note.new("C").send(cn).note_names
+      }
+    }   
+ end
+ 
 end

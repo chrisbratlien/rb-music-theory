@@ -21,6 +21,10 @@ module CBMusicTheory
       @strings.each{|s| s.fret_these_nin_pairs(pairs)}
     end
     
+    def fret_this_chord(chord)
+      #chord.notes.each{|n| @strings.each{|s| s.fret_just_this_nin_pair([n,chord.interval_for_note(n)]}}
+    end
+    
   end  
 
 end

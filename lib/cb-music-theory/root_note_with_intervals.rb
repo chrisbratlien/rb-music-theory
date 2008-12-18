@@ -74,7 +74,7 @@ module CBMusicTheory
      elsif less.kind_of?(NoteInterval)
        self.class.new(@root_note,@intervals - Set.new([less].to_set))
      elsif less.kind_of?(RootNoteWithIntervals)
-       remove_similar(less)
+       remove_similar_by_note_names(less)
      else
        self.class.new(@root_note,@intervals - Set.new(less))
      end
@@ -88,8 +88,12 @@ module CBMusicTheory
      self.class.new(@root_note,@intervals.reject{|i| @root_note + i == note})
    end
  
-   def remove_similar(other)
-     self.class.new(@root_note,@intervals.reject{|i| other.contains?(@root_note + i)})
+   def remove_similar_by_note_names(other)
+     self.class.new(@root_note,@intervals.reject{|i| other.contains_note_names_of?(@root_note + i)})
+   end
+ 
+   def remove_similar_by_note_values(other)
+     self.class.new(@root_note,@intervals.reject{|i| other.contains_note_values_of?(@root_note + i)})
    end
  
  
@@ -123,18 +127,30 @@ module CBMusicTheory
     end
     
     alias invert invert_to_top
- 
-   def contains?(other)
+
+    def contains_note_values_of?(other)
+      if other.kind_of?(Note)
+        self.note_values.to_set.superset?(Set.new([other.value]))
+      else
+        self.note_values.to_set.superset?(other.note_values.to_set)
+      end
+    end
+  
+    def note_values_contained_by?(other)
+      other.contains_note_values_of?(self)
+    end
+
+    def contains_note_names_of?(other)
      if other.kind_of?(Note)
-       self.note_names.to_set.superset?(Set.new(other.name))
+       self.note_names.to_set.superset?(Set.new([other.name]))
      else
        self.note_names.to_set.superset?(other.note_names.to_set)
      end
-   end
+    end
   
-   def contained_by?(other)
-     other.contains?(self)
-   end
+    def note_names_contained_by?(other)
+      other.contains_note_names_of?(self)
+    end
   
   end
 end
