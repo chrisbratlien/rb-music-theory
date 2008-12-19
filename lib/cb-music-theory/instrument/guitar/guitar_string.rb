@@ -1,7 +1,7 @@
 module CBMusicTheory
   
   class GuitarString
-    attr_reader :fretted,:intervals
+    attr_reader :fretted,:intervals, :open_note
   
     def initialize(open_note)
       @open_note = open_note
@@ -29,12 +29,12 @@ module CBMusicTheory
       @intervals[num]
     end
   
-    def be_fretted_at(num,interval = nil)
+    def be_fretted_at!(num,interval = nil)
       @fretted[num] = true
       @intervals[num] = interval
     end
   
-    def fret_this_note(note)
+    def fret_this_note!(note)
       0.upto(24) {|f|
         if note.name == note_at_fret(f).name
           be_fretted_at(f)
@@ -42,23 +42,22 @@ module CBMusicTheory
       }
     end
         
-    def fret_these_notes(notes)
-      notes.each{|n| fret_this_note(n)}
+    def fret_these_notes!(notes)
+      notes.each{|n| fret_this_note!(n)}
     end
   
-    def fret_this_nin_pair(pair)
+    def fret_this_nin_pair!(pair)
       interval = pair[0]
       note = pair[1]    
       0.upto(24) {|f|
         if note.name == note_at_fret(f).name
-          be_fretted_at(f,interval)
-          #@intervals[f] = interval
+          be_fretted_at!(f,interval)
         end
       }
     end
   
-    def fret_these_nin_pairs(pairs)
-      pairs.each{|np| fret_this_nin_pair(np) }
+    def fret_these_nin_pairs!(pairs)
+      pairs.each{|np| fret_this_nin_pair!(np) }
     end
 
     def fretted?
@@ -69,6 +68,15 @@ module CBMusicTheory
       @fretted[num]
     end
   
+    def be_unfretted!
+      @fretted = @fretted.map{|x| nil}
+      @intervals = @intervals.map{|x| nil}
+    end
+    
+    def fretted_interval
+      result = @intervals.detect{|x| x}
+    end
+
   end
 end
 

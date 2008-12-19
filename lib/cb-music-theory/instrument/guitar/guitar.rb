@@ -13,15 +13,15 @@ module CBMusicTheory
       @strings[num-1]
     end
   
-    def fret_these_notes(notes)
+    def fret_these_notes!(notes)
       @strings.each{|s| s.fret_these_notes(notes)}
     end
   
-    def fret_these_nin_pairs(pairs)
-      @strings.each{|s| s.fret_these_nin_pairs(pairs)}
+    def fret_these_nin_pairs!(pairs)
+      @strings.each{|s| s.fret_these_nin_pairs!(pairs)}
     end
     
-    def fret_this_chord(chord)
+    def fret_this_chord!(chord)
 
       root_note = chord.root_note
       low_note = chord.notes[0]
@@ -41,19 +41,43 @@ module CBMusicTheory
       #puts chord.nin_pairs.map{|x,y| x.short_name}
       #puts '---'
       
+      #ugly
+      
+      #the nesting of these loops makes a difference
+      #fret window outer + strings inner
+      #    vs
+      # strings outer + fret window inner
+      # 
+      # makes a difference on maj7 harmonized chords and also 6/9 chords
+      
       done = {}
-      chord.intervals.each {|i|
+      chord.intervals.each{|i| done[i] = 0}
+      (1..3).to_a.each{|pass|
+        chord.intervals.each {|i|
         n = chord.root_note + i
-        @strings.each{|s|
-          (window_low..window_high).to_a.each{|f|
-            if !s.fretted? and !done[n] and f == s.first_fret_for_note_name(n.name)
-              s.be_fretted_at(f,i)
-              done[n] = true
+        (window_low..window_high).to_a.each{|f|
+          @strings.each{|s|
+            puts "pass #{pass} trying interval #{i.short_name} note #{n.name} on #{s.open_note.name} string fret #{f}"
+            #if !s.fretted? and ((done[i]== 0 and pass == 1) or pass == 2) and f == s.first_fret_for_note_name(n.name)
+            if s.frets_for_note_name(n.name).to_set.superset?([f].to_set)
+              if (done[i] == 0) or !s.fretted?
+                if s.fretted?
+                  done[s.fretted_interval] -= 1
+                end
+                s.be_unfretted!
+                
+                #if !s.fretted? and ((done[i] == 0 and pass == 1) or pass == 2)
+                puts "*hit*"
+                s.be_fretted_at!(f,i)
+                done[i] += 1
+              end
             end
             }
           }
         }
-
+      }
+      
+    puts done.inspect
       ##fret on string 5
       ##chord.notes.each{|n| @strings.each{|s| s.fret_just_this_nin_pair([n,chord.interval_for_note(n)]}}
     end
