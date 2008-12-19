@@ -16,14 +16,22 @@ module CBMusicTheory
     def note_at_fret(num)
       @open_note + num
     end
-  
+    
+    def frets_for_note_name(n)
+      (0..24).to_a.select{|f| note_at_fret(f).name == n}
+    end
+    
+    def first_fret_for_note_name(n)
+      frets_for_note_name(n).first
+    end
+    
     def interval_at_fret(num)
       @intervals[num]
     end
   
-  
-    def be_fretted_at(num)
+    def be_fretted_at(num,interval = nil)
       @fretted[num] = true
+      @intervals[num] = interval
     end
   
     def fret_this_note(note)
@@ -34,7 +42,6 @@ module CBMusicTheory
       }
     end
         
-  
     def fret_these_notes(notes)
       notes.each{|n| fret_this_note(n)}
     end
@@ -44,8 +51,8 @@ module CBMusicTheory
       note = pair[1]    
       0.upto(24) {|f|
         if note.name == note_at_fret(f).name
-          be_fretted_at(f)
-          @intervals[f] = interval
+          be_fretted_at(f,interval)
+          #@intervals[f] = interval
         end
       }
     end
@@ -54,6 +61,9 @@ module CBMusicTheory
       pairs.each{|np| fret_this_nin_pair(np) }
     end
 
+    def fretted?
+      @fretted.detect{|x| x}
+    end
   
     def is_fretted_at?(num)
       @fretted[num]

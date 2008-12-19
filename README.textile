@@ -145,11 +145,13 @@ h4. Chord Inversions
 
 
 h4. Valid Chords for Scale Degrees
+
 <pre><code>
 irb(main):001:0> Note.new("C").major_scale.valid_chord_names_for_degree(1)
 => ["maj7_chord", "six_nine_chord", "add4_chord", "add2_chord", "sixth_chord", "maj11_chord", "maj_add2_chord", "maj_add9_chord", "major_chord", "sus4_chord", "maj_add4_chord", "fifth_chord", "sus2_chord", "maj9_chord", "add9_chord"]
 </code></pre>
 (some of these chord_names are synonyms, so there are duplicates)
+
 
 
 h4. Harmonized Chord-Scales 
