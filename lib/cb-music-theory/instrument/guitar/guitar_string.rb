@@ -17,12 +17,12 @@ module CBMusicTheory
       @open_note + num
     end
     
-    def frets_for_note_name(n)
-      (0..24).to_a.select{|f| note_at_fret(f).name == n}
+    def frets_for_note_name(n,not_below_fret = 0)
+      (not_below_fret..24).to_a.select{|f| note_at_fret(f).name == n}
     end
     
-    def first_fret_for_note_name(n)
-      frets_for_note_name(n).first
+    def first_fret_for_note_name(n,not_below_fret = 0)
+      frets_for_note_name(n,not_below_fret).first
     end
     
     def interval_at_fret(num)
