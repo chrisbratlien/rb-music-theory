@@ -94,7 +94,7 @@ module CBMusicTheory
       :aug      => [0,4,8],
       :aug_maj7 => [0,4,8,11],
       :aug7     => [0,4,8,10],
-      :aug_min7 => :aug7
+      :aug_min7 => :aug7,
 
       :dim      => [0,3,6],
       :dim7     => [0,3,6,9],
