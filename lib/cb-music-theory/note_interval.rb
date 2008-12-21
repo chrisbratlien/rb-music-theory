@@ -92,6 +92,9 @@ module CBMusicTheory
       :min7_b5    => :min7_flat5,
 
       :aug      => [0,4,8],
+      :aug_maj7 => [0,4,8,11],
+      :aug7     => [0,4,8,10],
+      :aug_min7 => :aug7
 
       :dim      => [0,3,6],
       :dim7     => [0,3,6,9],
@@ -109,7 +112,7 @@ module CBMusicTheory
       :seventh_sharp9 => [0,4,7,10,15],
       :seventh_flat9  => [0,4,7,10,13],
       :seventh_b9     => :seventh_flat9,
-      :seventh_sharp5 => [0,4,8,10],
+      :seventh_sharp5 => :aug7,
       :seventh_flat5  => [0,4,6,10],
       :seventh_b5     => :seventh_flat5,
 
