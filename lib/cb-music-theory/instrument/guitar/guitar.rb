@@ -34,16 +34,26 @@ module CBMusicTheory
     end
 
 
-    def foo(chord,target_strings,window_low,window_high)
+    def priority?(keepers,a,b)
+      winner = b
+      if (!interval_is_fretted?(a) and interval_fretted_count(b) > 1) or (keepers.include?(a) and !keepers.include?(b))
+        winner = a
+      end
+      puts "A: #{a.short_name} B: #{b.short_name} WINNER: #{winner.short_name}"
+      winner == a
+    end
+
+    def foo(chord,keepers,target_strings,window_low,window_high)
+      puts chord.class
       (1..3).to_a.each{|pass|
         chord.intervals.each {|i|
           n = chord.root_note + i
           (window_low..window_high).to_a.each{|f|
             target_strings.each{|s|
               if s.frets_for_note_name(n.name).to_set.include?(f)
-                if !s.fretted? or (s.fretted? and !interval_is_fretted?(i) and interval_fretted_count(s.fretted_interval) > 1)
+                if !s.fretted? or (s.fretted? and s.fretted_interval != i and priority?(keepers,i,s.fretted_interval))              
                   if s.fretted? 
-                    puts "pass #{pass} trying interval #{i.short_name} note #{n.name} on #{s.open_note.name} string fret #{f} and undoing #{s.fretted_interval.short_name}"
+                    puts "pass #{pass} trying interval value=#{i.value} sn=#{i.short_name} note #{n.name} on #{s.open_note.name} string fret #{f} and undoing #{s.fretted_interval.short_name}"
                   end
                   s.be_unfretted!
                   if pass > 1
@@ -62,17 +72,20 @@ module CBMusicTheory
     
     def fret_this_chord!(chord,not_below_fret = 0)
 
+      fret_if_present = [3,4,10,11].map{|x| NoteInterval.new(x)}.to_set.add(chord.intervals.max) 
+
       root_note = chord.root_note
       low_note = chord.notes[0]
-      low_interval = chord.intervals.to_a.first
+      low_interval = chord.intervals.min
       
       #so far, assuming the root note is on 5th string
       
       low_note_fret = string(5).first_fret_for_note_name(low_note.name,not_below_fret)
   
       string(5).be_fretted_at!(low_note_fret,low_interval)
-      foo(chord,(1..4).map{|s| string(s)},[low_note_fret - 0,0].max,low_note_fret + 2)
-
+      puts "AAAAAAA"
+      foo(chord,fret_if_present,(1..4).map{|s| string(s)},[low_note_fret - 0,0].max,low_note_fret + 2)
+      puts "BBBBBB"
 
       #todo, in trying alternative frettings, consider:
         #- number of notes vs available strings
@@ -80,44 +93,42 @@ module CBMusicTheory
         #- what would calling a root_6 chord look like
         # - it involves refactoring the start_at_fret assumption in fretboard_with_harmonized_scale template
         
+       
         
-        
-      strays = chord.intervals.select{|i| !interval_is_fretted?(i)}
+        strays = chord.intervals.select{|i| !interval_is_fretted?(i) and fret_if_present.include?(i)}
       if !strays.empty?
          puts "retry 2"
          self.be_unfretted!  #the whole guitar tells each string to be unfretted        
          string(5).be_fretted_at!(low_note_fret,low_interval)
-         foo(chord,(1..4).map{|s| string(s)},[low_note_fret - 1,0].max,low_note_fret + 1)
+         foo(chord,fret_if_present,(1..4).map{|s| string(s)},[low_note_fret - 1,0].max,low_note_fret + 1)
        end
  
   
-    strays = chord.intervals.select{|i| !interval_is_fretted?(i)}
+       strays = chord.intervals.select{|i| !interval_is_fretted?(i) and fret_if_present.include?(i)}
     if !strays.empty?
        puts "retry 3"
        self.be_unfretted!  #the whole guitar tells each string to be unfretted        
        string(5).be_fretted_at!(low_note_fret,low_interval)
-       foo(chord,(1..4).map{|s| string(s)},[low_note_fret - 1,0].max,low_note_fret + 2)
+       foo(chord,fret_if_present,(1..4).map{|s| string(s)},[low_note_fret - 1,0].max,low_note_fret + 2)
      end
 
-        strays = chord.intervals.select{|i| !interval_is_fretted?(i)}
+     strays = chord.intervals.select{|i| !interval_is_fretted?(i) and fret_if_present.include?(i)}
         if !strays.empty?
           puts "retry 4"
            self.be_unfretted!  #the whole guitar tells each string to be unfretted        
            string(5).be_fretted_at!(low_note_fret,low_interval)
-           foo(chord,(1..4).map{|s| string(s)},[low_note_fret - 2,0].max,low_note_fret + 0)
+           foo(chord,fret_if_present,(1..4).map{|s| string(s)},[low_note_fret - 2,0].max,low_note_fret + 0)
          end
 
-
-
-    strays = chord.intervals.select{|i| !interval_is_fretted?(i)}
+         strays = chord.intervals.select{|i| !interval_is_fretted?(i) and fret_if_present.include?(i)}
     if !strays.empty?
       puts "retry 5"
       self.be_unfretted!  #the whole guitar tells each string to be unfretted        
       string(5).be_fretted_at!(low_note_fret,low_interval)
-      foo(chord,(1..4).map{|s| string(s)},[low_note_fret - 2,0].max,low_note_fret + 1)
+      foo(chord,fret_if_present,(1..4).map{|s| string(s)},[low_note_fret - 2,0].max,low_note_fret + 1)
     end
 
-    strays = chord.intervals.select{|i| !interval_is_fretted?(i)}
+    strays = chord.intervals.select{|i| !interval_is_fretted?(i) and fret_if_present.include?(i)}
     if !strays.empty?
     puts "STILL stranded "
     puts "#{chord.note_names} #{strays.map{|si| si.short_name}.join(',') }"

@@ -1,0 +1,2 @@
+RewriteLog /var/log/spectrum-rewrite.log
+RewriteLogLevel 3
