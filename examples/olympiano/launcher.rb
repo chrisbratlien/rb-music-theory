@@ -13,7 +13,7 @@ midi.autodetect_driver
 include MIDIator::Notes
 
 def perform(attributes = {})	
-  %w{root_note scale_name chord_picker progression improv improv_set logging}.each do |attribute|
+  %w{midi root_note scale_name chord_picker progression improv improv_set logging}.each do |attribute|
     eval("@#{attribute} = attributes[:#{attribute}]")
   end
 
@@ -29,16 +29,24 @@ def perform(attributes = {})
     puts "perform: #{rn.name} #{sn} on the progression #{prog.join(',')} \n"
   end
   first_improv_pick = @improv_set.keys.pick
+
+  queue = []
   
   prog.each{ |degree| 
-	(chord,chord_text) = @chord_picker[scale,degree,root_cn] 
-	improv_key = @improv[first_improv_pick,@improv_set]
+	  (chord,chord_text) = @chord_picker[scale,degree,root_cn] 
+	  improv_key = @improv[first_improv_pick,@improv_set]
     if @logging
-      puts "playing #{chord_text} on degree #{degree}  improv: #{improv_key}"
+      puts "queueing #{chord_text} on degree #{degree}  improv: #{improv_key}"
     end
-    base_duration = 1.4
-	@improv_set[improv_key][chord.note_values,base_duration]  #picking a player lambda and then invoking it 
+    base_duration = 1.5
+
+	  @improv_set[improv_key][chord.note_values,base_duration,queue]  #picking an improv lambda and then invoking it 
   }
+
+  #puts queue.inspect.to_s
+
+  queue.each{|n,dur| @midi.play n, dur}
+
   sleep(2)
 end
 
@@ -66,174 +74,6 @@ def bend_note(midi,start,finish,sd=0.2,bd=0.1,fd=0.7)
   midi.driver.note_off(my_note,0,0)
   midi.driver.pitch_bend(0,0x3f) #return to center
 end
-
-=begin
-#improv sets
-players = {}
-experimental = {}
-hammett = {}
-
-players[:peggy] = L { |notes,dur| 
-  #peggy likes to play arpeggios
-  (notes - [notes.last] + notes.reverse).each{|note|  midi.play note, 0.1 * dur }  
-}
-
-players[:tap_up] = L { |notes,dur| 
-  #hammett likes to play arpeggios like those guitar finger tappers
-  (notes * [1,2].pick).each{|note| midi.play note, 0.075 * dur }  
-}
-
-players[:tap_up_double_stop] = L { |notes,dur| 
-  #hammett likes to play arpeggios like those guitar finger tappers
-  (notes * [1,2].pick).each{|note|  midi.play [note,note+12], 0.075 * dur }  
-}
-
-players[:tap_up_high] = L { |notes,dur| 
-  #hammett likes to play arpeggios like those guitar finger tappers
-  (notes * [1,2].pick).each{|note|  [note,note+12].each{|n| midi.play n, 0.075 * dur} }  
-}
-
-players[:tap_down] = L { |notes,dur| 
-  #hammett likes to play arpeggios like those guitar finger tappers
-  (notes.reverse * [1,2].pick).each{|note| midi.play note, 0.075 * dur}  
-}
-
-players[:tap_down_double_stop] = L { |notes,dur| 
-  #hammett likes to play arpeggios like those guitar finger tappers
-  (notes.reverse * [1,2].pick).each{|note|  midi.play [note,note+12], 0.075 * dur }  
-}
-
-players[:tap_down_high] = L { |notes,dur| 
-  #hammett likes to play arpeggios like those guitar finger tappers
-  (notes.reverse * [1,2].pick).each{|note|  [note,note+12].each{|n| midi.play n, 0.075 * dur} }  
-}
-
-
-players[:rest1] = L {|notes,dur| sleep 0.5 * dur }
-players[:rest2] = L {|notes,dur| sleep 1 * dur }
-
-hammett[:maybe_bend] = L {|notes,dur|
-
-  s = 0.1 * dur #start
-  b = 0.1 * dur #bend
-  g = 0.0 * dur #glue
-  f = 0.1 * dur #finish
-
-
-  nx = notes[1]
-  if nx - notes[0] < 4
-   
-	bend_note(midi,nx,nx-=1,s,b,g)
-	while nx > notes[0]
-	  if nx - notes[0] == 1
-	    bend_note(midi,nx,nx-=1,g,b,f)
-	  else
-	    bend_note(midi,nx,nx-=2,g,b,g)
-	  end
-	end
-  end
-}
-
-#experimental[:hammett_dive_bomb] = L {|notes,dur|
-hammett[:dive_bomb_down] = L {|notes,dur|
-
-  s = 0.05 * dur #start
-  b = 0.02 * dur #bend
-  g = 0.0 * dur #glue
-  f = 0.05  * dur #finish
-
-	nx = notes.last + 12
-	bend_note(midi,nx,nx-=1,s,b,g)
-	while nx > notes[0]
-	  if nx - notes[0] == 1
-	    bend_note(midi,nx,nx-=1,g,b,f)
-	  else
-	    bend_note(midi,nx,nx-=2,g,b,g)
-	  end
-	end
-}
-
-
-hammett[:dive_bomb_up] = L {|notes,dur|
-
-  s = 0.05 * dur #start
-  b = 0.02 * dur #bend
-  g = 0.0 * dur #glue
-  f = 0.05 * dur #finish
-
-	nx = notes[0]
-	bend_note(midi,nx,nx+=1,s,b,g)
-	while nx < notes.last + 12
-	  if nx - notes[0] == 1
-	    bend_note(midi,nx,nx+=1,g,b,f)
-	  else
-	    bend_note(midi,nx,nx+=2,g,b,g)
-	  end
-	end
-}
-
-
-
-players[:bassguy1] = L { |notes,dur| 
-  [[0,0.4],[1,0.2],[0,0.2]].each{|i,d| midi.play notes[i],d * dur}
-}
-players[:bassguy2] = L { |notes,dur| 
-  [[0,0.4],[1,0.1],[0,0.1],[1,0.2]].each{|i,d| midi.play notes[i],d * dur}
-}
-players[:george] = L { |notes,dur| midi.play notes, 0.4 * dur }
-
-players[:calmer] = L { |notes,dur| 
-  [notes,notes.first].each{ |i| midi.play i, 0.4 * dur}  
-}
-
-players[:inward_a] = L { |notes,dur|
- tmp = notes.clone
- while !tmp.empty?
-   midi.play tmp.pop, 0.2 * dur
-   tmp.reverse!
-  end
-}
-
-players[:inward_b] = L { |notes,dur|
- tmp = notes.clone.reverse
- while !tmp.empty?
-   midi.play tmp.pop, 0.2 * dur
-   tmp.reverse!
- end
-}
-players[:outward_a] = L { |notes,dur|
-  pivot = notes.size / 2
-  tmp = notes[0,pivot].reverse + notes[pivot..-1].reverse
-  while !tmp.empty?
-    midi.play tmp.pop, 0.2 * dur
-    tmp.reverse!
-  end  
-}
-players[:outward_b] = L { |notes,dur|
-  pivot = notes.size / 2
-  tmp = notes[0,pivot].reverse + notes[pivot..-1].reverse
-  tmp.reverse!
-  while !tmp.empty?
-    midi.play tmp.pop, 0.2 * dur
-    tmp.reverse!
-  end  
-}
-
-players[:tony] = L { |notes,dur|
-  pivot = -1 * [3, notes.size-1].min
-  midi.play notes[0..pivot], 0.4 * dur
-  notes[pivot+1..-1].each{|note| midi.play note, 0.1 * dur}
-}
-
-players[:clifton] = L { |notes,dur|
-  pivot = -1 * [4, notes.size-1].min
-  midi.play notes[0..pivot], 0.4 * dur
-  notes[pivot+1..-1].each{|note| midi.play note, 0.1 * dur}
-}
-
-=end
-
-
 
 # map degrees to their next "allowed" degrees
 # DANGER, THIS CHORD LADDER IS TOO SIMPLE, FORMULAIC, RIGID, ETC, AND NOT MEANT TO BE FOR EVERY TYPE OF SCALE
@@ -270,20 +110,6 @@ puts "Combinator->Piano and Keyboard->Accoustic Piano->Concert Piano"
 puts "Combinator->Combinator Patches->Guitar and Plucked->Misc Guitar and Plucked->Whale Calls"
 puts
 puts
-puts "first, a few canned examples"
-
-
-# chord progression
-
-#perform(Note.new("C"), :phrygian_scale, :min7_chord, prog,tony)
-#perform(Note.new(54), :mixolydian_scale, :eleventh_chord, prog,clifton)
-#perform(Note.new("F"), :major_scale, :maj9_chord, prog,peggy)
-
-#perform(Note.new("F"), :major_scale, :maj9_chord, prog,inward_a)
-#perform(Note.new("F"), :major_scale, :maj9_chord, prog,inward_b)
-#perform(Note.new("F"), :major_scale, :maj9_chord, prog,outward_a)
-#perform(Note.new("F"), :major_scale, :maj9_chord, prog,outward_b)
-  
 
 def next_degree(start,ladder)
   # also may pick from next octave (assuming 7-degree scales)
@@ -318,27 +144,34 @@ end
 
 harmonized_root_chord_picker = L {|scale,degree,root_chord_name|
   chord = scale.harmonized_chord(degree,root_chord_name)
-  [chord,'harmonized ' + root_chord_name]
+  [chord,'harmonized I ' + root_chord_name]
 }  
   
 degree_chord_picker = L {|scale,degree,root_chord_name| 
   chord_name = scale.valid_chord_names_for_degree(degree).pick
-  chord = scale.degree(degree).send(chord_name) || scale.degree_triad(degree)
-	[chord,chord_name]
+  if !chord_name
+    #fall back to the other call
+    chord,chord_name = harmonized_root_chord_picker[scale,degree,root_chord_name]
+  else
+    chord = scale.degree(degree).send(chord_name)
+  end
+  [chord,chord_name]
 }
 
 50.times {
     
   	perform(
+  	:midi => midi,
 		:root_note => L {Note.new(rand(20) + 40)},
-		:scale_name => L {|root_note| Note.random_scale_method},		
-		:chord_picker => harmonized_root_chord_picker,
-		#:chord_picker => degree_chord_picker,
+		#:scale_name => L {|root_note| Note.random_scale_method},		
+		:scale_name => L {|root_note| "minor_pentatonic_scale"},		
+		#:chord_picker => harmonized_root_chord_picker,
+		:chord_picker => degree_chord_picker,
 		:progression => L {|scale_name| generate_progression(ladders[scale_name])},
 		#:progression => L {[1,4,5,2,8,4,8,4,9,7,2,5,1,3,6,9,5,7,2,5,6,2,7,5,8,4,1,7,8]},
-		#:improv => L{|orig,set| orig}, #picks one improv at beginning to use on all chords of progression 
-		:improv => L{|orig,set| set.keys.pick}, #pick an improv at every chord change in the progression
-		#:improv => L{|orig,set| :calmer}, #only this player, always, period!
+		:improv => L{|orig,set| orig}, #picks one improv at beginning to use on all chords of progression 
+		#:improv => L{|orig,set| set.keys.pick}, #pick an improv at every chord change in the progression
+		#:improv => L{|orig,set| :inward_b}, #only this player, always, period!
 		#:improv => L{|orig,set| set.keys.select{|x| x.to_s =~ /hammett/}.pick }, #at every chord, pick any improv containing the regex
 		:improv_set => eval(File.read("improv_set_players.rb")),
 		:logging => true,

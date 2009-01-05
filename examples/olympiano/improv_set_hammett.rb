@@ -1,8 +1,9 @@
 #improv sets
+#TODO: rethink bend_note now that I'm queueing instead of calling midi.play in the lambda
 hammett = {}
 
 
-hammett[:maybe_bend] = L {|notes,dur|
+hammett[:maybe_bend] = L {|notes,dur,q|
 
   s = 0.1 * dur #start
   b = 0.1 * dur #bend
@@ -24,8 +25,8 @@ hammett[:maybe_bend] = L {|notes,dur|
   end
 }
 
-#experimental[:hammett_dive_bomb] = L {|notes,dur|
-hammett[:dive_bomb_down] = L {|notes,dur|
+#experimental[:hammett_dive_bomb] = L {|notes,dur,q|
+hammett[:dive_bomb_down] = L {|notes,dur,q|
 
   s = 0.05 * dur #start
   b = 0.02 * dur #bend
@@ -44,7 +45,7 @@ hammett[:dive_bomb_down] = L {|notes,dur|
 }
 
 
-hammett[:dive_bomb_up] = L {|notes,dur|
+hammett[:dive_bomb_up] = L {|notes,dur,q|
 
   s = 0.05 * dur #start
   b = 0.02 * dur #bend
