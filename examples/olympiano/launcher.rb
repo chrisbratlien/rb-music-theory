@@ -18,7 +18,7 @@ def perform(attributes = {})
   end
 
   rn = @root_note[]
-  sn = @scale_name[rn]
+  sn = @scale_name[]
   scale = rn.send(sn)
   prog = @progression[sn]
  
@@ -28,24 +28,56 @@ def perform(attributes = {})
   if @logging
     puts "perform: #{rn.name} #{sn} on the progression #{prog.join(',')} \n"
   end
-  first_improv_pick = @improv_set.keys.pick
+
+  first_improv_pick = @improv_set.keys.pick  
+  while first_improv_pick.to_s =~ /rest/
+    first_improv_pick = @improv_set.keys.pick  
+  end
+
+    
 
   queue = []
-  
+  stats = []
   prog.each{ |degree| 
 	  (chord,chord_text) = @chord_picker[scale,degree,root_cn] 
 	  improv_key = @improv[first_improv_pick,@improv_set]
     if @logging
       puts "queueing #{chord_text} on degree #{degree}  improv: #{improv_key}"
     end
-    base_duration = 1.5
+    base_duration = 1.0
 
-	  @improv_set[improv_key][chord.note_values,base_duration,queue]  #picking an improv lambda and then invoking it 
+    mini_queue = []
+	  @improv_set[improv_key][chord.note_values,base_duration,mini_queue]  #picking an improv lambda and then invoking it 
+ 
+ 
+    # I may be going off on a tangent here trying to correct lengths, seems like an indicator that I
+    # am wanting clearer rhythms and I didn't plan for it early on
+    # I'm unsure this "FIX" is worth persuing...
+    
+ 
+    puts mini_queue.inspect.to_s
+    len = mini_queue.inject(0.0){|sum,i| sum + i[1]}
+    stats << len
+    
+    if len < base_duration
+      diff = base_duration - len
+      mini_queue.last[1] += diff
+      puts "FIXED #{len} #{mini_queue.inspect.to_s}"
+    end
+    queue += mini_queue
   }
 
+   puts stats.inspect.to_s
+   puts "min #{stats.min}"
+   puts "max #{stats.max}"
   #puts queue.inspect.to_s
 
-  queue.each{|n,dur| @midi.play n, dur}
+  queue.each{|n,dur| 
+    if @logging
+      #puts [n,dur].inspect.to_s
+    end
+    @midi.play n, dur
+  }
 
   sleep(2)
 end
@@ -158,19 +190,25 @@ degree_chord_picker = L {|scale,degree,root_chord_name|
   [chord,chord_name]
 }
 
+favorite_scales = L {
+  ["mixolydian_scale", "phrygian_scale", "lydian_scale", "dorian_scale", "harmonic_minor_scale", 
+  "major_scale","melodic_minor_scale","locrian_scale", "hangman_scale", "natural_minor_scale"].pick
+}
+
 50.times {
     
-  	perform(
+  perform(
   	:midi => midi,
-		:root_note => L {Note.new(rand(20) + 40)},
-		#:scale_name => L {|root_note| Note.random_scale_method},		
-		:scale_name => L {|root_note| "minor_pentatonic_scale"},		
+		:root_note => L {Note.new(rand(20) + 45)},
+		:scale_name => favorite_scales,		
+		#:scale_name => L { Note.random_scale_method},		
+		#:scale_name => L { "minor_pentatonic_scale"},		
 		#:chord_picker => harmonized_root_chord_picker,
-		:chord_picker => degree_chord_picker,
+		:chord_picker => [degree_chord_picker,harmonized_root_chord_picker].pick,
 		:progression => L {|scale_name| generate_progression(ladders[scale_name])},
 		#:progression => L {[1,4,5,2,8,4,8,4,9,7,2,5,1,3,6,9,5,7,2,5,6,2,7,5,8,4,1,7,8]},
-		:improv => L{|orig,set| orig}, #picks one improv at beginning to use on all chords of progression 
-		#:improv => L{|orig,set| set.keys.pick}, #pick an improv at every chord change in the progression
+		#:improv => L{|orig,set| orig}, #picks one improv at beginning to use on all chords of progression 
+		:improv => L{|orig,set| set.keys.pick}, #pick an improv at every chord change in the progression
 		#:improv => L{|orig,set| :inward_b}, #only this player, always, period!
 		#:improv => L{|orig,set| set.keys.select{|x| x.to_s =~ /hammett/}.pick }, #at every chord, pick any improv containing the regex
 		:improv_set => eval(File.read("improv_set_players.rb")),

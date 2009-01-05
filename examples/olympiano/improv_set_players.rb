@@ -41,7 +41,10 @@ players[:bassguy1] = L { |notes,dur,q|
 players[:bassguy2] = L { |notes,dur,q| 
   [[0,0.4],[1,0.1],[0,0.1],[1,0.2]].each{|i,d| q << [ notes[i],d * dur]}
 }
+
 players[:george] = L { |notes,dur,q| q << [ notes, 0.4 * dur] }
+players[:george1] = L { |notes,dur,q| q << [ notes, 0.2 * dur] << [ notes, 0.2 * dur] }
+players[:george2] = L { |notes,dur,q| q << [ notes, 0.1 * dur] << [0,0.1 * dur] << [ notes, 0.2 * dur] }
 
 players[:calmer] = L { |notes,dur,q| 
   [notes,notes.first].each{ |i| q << [ i, 0.4 * dur]}  
