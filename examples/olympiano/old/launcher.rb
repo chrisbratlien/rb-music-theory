@@ -39,7 +39,7 @@ def perform(attributes = {})
   queue = []
   stats = []
   prog.each{ |degree| 
-	  chord,chord_text = @chord_picker[scale,degree,root_cn] 
+	  (chord,chord_text) = @chord_picker[scale,degree,root_cn] 
 	  improv_key = @improv[first_improv_pick,@improv_set]
     if @logging
       puts "queueing #{chord_text} on degree #{degree}  improv: #{improv_key}"
