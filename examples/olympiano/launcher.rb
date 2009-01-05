@@ -44,7 +44,8 @@ def perform(attributes = {})
     if @logging
       puts "queueing #{chord_text} on degree #{degree}  improv: #{improv_key}"
     end
-    base_duration *= ( 1 + (rand(30)-15)* 0.01)  # if you're at 1.0, jump to somewhere between 0.85 and 1.15
+    base_duration *= ( 1 + (rand(30)-15)* 0.01)  
+    base_duration = [base_duration,0.75].max # go no lower than 0.75
 
     mini_queue = []
 	  @improv_set[improv_key][chord.note_values,base_duration,mini_queue]  #picking an improv lambda and then invoking it 
