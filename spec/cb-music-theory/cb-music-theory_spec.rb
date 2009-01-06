@@ -47,7 +47,17 @@ describe NoteInterval do
 end
 
 describe RootNoteWithIntervals do
+  it "should contain an integer note value" do
+    Note.new("C").major_scale.contains_note_value?(Note.new("C").value).should == true  
+  end
   
+  it "should contain note values of another" do
+    Note.new("C").major_scale.contains_note_values_of?(Note.new("C").major_chord).should == true  
+  end
+  it "should contain note names of another" do
+    Note.new("C").major_scale.contains_note_names_of?(Note.new("C").major_chord).should == true  
+  end
+      
 end
 
 describe Chord do
@@ -74,6 +84,9 @@ describe Chord do
   it "should add 2 chords" do
     (Note.new("C").maj7_chord + Note.new("D").minor_chord).notes.should == Note.new("C").major_scale.notes
   end
+
+
+
 end
 
 describe Scale do

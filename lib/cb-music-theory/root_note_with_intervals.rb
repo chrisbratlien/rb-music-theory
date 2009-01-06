@@ -128,9 +128,14 @@ module CBMusicTheory
     
     alias invert invert_to_top
 
+
+    def contains_note_value?(val)
+      self.note_values.include?(val)
+    end
+
     def contains_note_values_of?(other)
       if other.kind_of?(Note)
-        self.note_values.to_set.superset?(Set.new([other.value]))
+        self.contains_note_value?(other.value)
       else
         self.note_values.to_set.superset?(other.note_values.to_set)
       end
@@ -139,6 +144,7 @@ module CBMusicTheory
     def note_values_contained_by?(other)
       other.contains_note_values_of?(self)
     end
+
 
     def contains_note_names_of?(other)
      if other.kind_of?(Note)
