@@ -199,38 +199,10 @@ Or, get your Phryg on
 </code></pre>
 
 
-h4. Examples: Olympiano and Rollo 
+h4. Examples
 
-These are MIDI Generators which primarily focus on harmonized scales.  
+These projects use rb-music-theory
 
-Olympiano will keep generating a continuous degree/chord progression and then rotate in improv lambdas at each chord to play their
-own interpretation of the chord.  These lambdas may be as laid back as :george, who just holds down all the notes in a chord, to the frantic
-arpeggios of :hammett.  Then there's :inward_a who sort of plays spin-the-bottle with the chords he's given to play.  :peggy plays the straight
-up-and-down arpeggio.
+<a href="http://github.com/chrisbratlien/olympiano/tree/master">Olympiano</a>
 
-<pre><code>
-  cd examples/olympiano
-  ruby launcher.rb
-</code>
-</pre>
-
-I'm using programming paradigms found in Archaeopteryx.  Unfortunately, I didn't keep a consistent concept of rhythm and tempo
-in Olympiano.  Different improv lambdas have free will to hog the spotlight.  So it may be destined to remain a classical piano player.
-
-So now there's...
-
-h3. Rollo
-
-At this point it's pretty small.  It's a 2-element linked list, a "current" PianoRoll which also points to a "next" PianoRoll.
-
-But it does currently play music!  
-
-Each piano roll can allow any number of improv lambdas to have their own page of the roll, and the next pointer lets them peek at
-the next measure PianoRoll.  Knowing the next measure's chord may influence some imrpov lambdas to walk slowly or ideally
-kamikaze their way towards a note in that upcoming measure!
-
-Future goals include giving each improv lambda tools to ask where the gaps are.  As they stack up, it may get cramped and some improv
-lambdas may want to play their notes/probabilities in a less crowded area of the piano roll.  But then again that may be a completely
-stupid thing to do.  Lots of music doubles up and parts playing in unity is common.
-
-Of course I'd like to swap these improvs in and out like I am with Olympiano.
+<a href="http://github.com/chrisbratlien/rollo/tree/master">Rollo</a>
