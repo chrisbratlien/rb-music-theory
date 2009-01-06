@@ -37,7 +37,7 @@ class PianoRoll
     evolve_probs
       
     (1..4).each do |measure|
-      puts "\a" if measure == 1
+      #puts "\a" if measure == 1
       (0..3).each do |step|
         collect_for_this_step = []
         (60..72).each do |note|

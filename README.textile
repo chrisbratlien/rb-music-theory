@@ -203,7 +203,7 @@ h4. Examples: Olympiano and Rollo
 
 These are MIDI Generators which primarily focus on harmonized scales.  
 
-h3. Olympiano will keep generating a continuous degree/chord progression and then rotate in improv lambdas at each chord to play their
+Olympiano will keep generating a continuous degree/chord progression and then rotate in improv lambdas at each chord to play their
 own interpretation of the chord.  These lambdas may be as laid back as :george, who just holds down all the notes in a chord, to the frantic
 arpeggios of :hammett.  Then there's :inward_a who sort of plays spin-the-bottle with the chords he's given to play.  :peggy plays the straight
 up-and-down arpeggio.
