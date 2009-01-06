@@ -6,17 +6,17 @@ require 'pathname'
  
  
 ROOT = Pathname(__FILE__).dirname.expand_path
-require ROOT + 'lib/cb-music-theory/version'
+require ROOT + 'lib/rb-music-theory/version'
 
-RUBY_FORGE_PROJECT = "cb-music-theory"
+RUBY_FORGE_PROJECT = "rb-music-theory"
 GEM_AUTHOR = "Chris Bratlien"
 GEM_EMAIL = "chrisbratlien@gmail.com"
-GEM_NAME = "cb-music-theory"
+GEM_NAME = "rb-music-theory"
 GEM_CLEAN = ["log", "pkg"]
 GEM_EXTRAS = { :has_rdoc => true, :extra_rdoc_files => %w[ README.textile LICENSE TODO ] }
  
-PROJECT_NAME = "cb-music-theory"
-PROJECT_URL = "http://github.com/chrisbratlien/cb-music-theory/tree/master"
+PROJECT_NAME = "rb-music-theory"
+PROJECT_URL = "http://github.com/chrisbratlien/rb-music-theory/tree/master"
 PROJECT_DESCRIPTION = PROJECT_SUMMARY = "This gem models notes, note intervals, scales, and chords"
  
 #require ROOT.parent + 'tasks/hoe'

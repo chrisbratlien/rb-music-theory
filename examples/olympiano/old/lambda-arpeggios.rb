@@ -2,7 +2,7 @@ alias :L :lambda
 
 require 'rubygems'
 require 'midiator'
-require 'cb-music-theory' #git clone git://github.com/chrisbratlien/cb-music-theory.git
+require 'rb-music-theory' #git clone git://github.com/chrisbratlien/rb-music-theory.git
  
 midi = MIDIator::Interface.new
 midi.autodetect_driver

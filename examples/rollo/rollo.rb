@@ -1,7 +1,7 @@
 alias :L :lambda
 require 'rubygems'
 require 'midiator'
-require 'cb-music-theory'
+require 'rb-music-theory'
 
 class PianoRoll
 
