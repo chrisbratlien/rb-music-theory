@@ -57,7 +57,11 @@ describe RootNoteWithIntervals do
   it "should contain note names of another" do
     Note.new("C").major_scale.contains_note_names_of?(Note.new("C").major_chord).should == true  
   end
-      
+
+  it "should describe the note names in common between scales" do
+    Note.new("C").major_scale.note_names_in_common(Note.new("A").minor_scale).should == ['C','D','E','F','G','A','B']
+  end
+          
 end
 
 describe Chord do

@@ -157,6 +157,10 @@ module RBMusicTheory
     def note_names_contained_by?(other)
       other.contains_note_names_of?(self)
     end
+    
+    def note_names_in_common(other)
+      note_names.select{|n| other.note_names.include?(n)}
+    end
   
   end
 end
