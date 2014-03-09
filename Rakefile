@@ -36,14 +36,4 @@ desc 'Run specifications'
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.rspec_opts = '--options spec/spec.opts' if File.exists?('spec/spec.opts')
   #t.files = Pathname.glob((ROOT + 'spec/**/*_spec.rb').to_s)
- 
-  begin
-    # TODO: re-enable code coverage testing
-    t.rcov = false #ENV.has_key?('NO_RCOV') ? ENV['NO_RCOV'] != 'true' : true
-    t.rcov_opts << '--exclude' << 'spec'
-    t.rcov_opts << '--text-summary'
-    t.rcov_opts << '--sort' << 'coverage' << '--sort-reverse'
-  rescue Exception
-    # rcov not installed
-  end
 end
