@@ -1,4 +1,6 @@
-ROOT = Pathname(__FILE__).dirname.expand_path
+require 'pathname'
+
+ROOT = Pathname.new(__FILE__).dirname.expand_path
 require ROOT + 'lib/rb-music-theory/version'
 
 RUBY_FORGE_PROJECT = "rb-music-theory"
