@@ -7,7 +7,7 @@ At the shell:
   # git clone git://github.com/chrisbratlien/rb-music-theory.git 
   # cd rb-music-theory
   # rake gem
-  # rake install
+  # gem install rb-music-theory --user-install
 </code></pre>
 
 In your Ruby code:
