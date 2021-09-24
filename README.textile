@@ -6,7 +6,7 @@ At the shell:
 <pre><code>
   # git clone git://github.com/chrisbratlien/rb-music-theory.git 
   # cd rb-music-theory
-  # rake gem
+  # gem build rb-music-theory.gemspec
   # gem install rb-music-theory --user-install
 </code></pre>
 
