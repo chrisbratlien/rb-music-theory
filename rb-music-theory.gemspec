@@ -8,7 +8,6 @@ GEM_AUTHOR = "Chris Bratlien"
 GEM_EMAIL = "chrisbratlien@gmail.com"
 GEM_NAME = "rb-music-theory"
 GEM_CLEAN = ["log", "pkg"]
-GEM_EXTRAS = { :has_rdoc => true, :extra_rdoc_files => %w[ README.textile LICENSE TODO ] }
  
 PROJECT_NAME = "rb-music-theory"
 PROJECT_URL = "http://github.com/chrisbratlien/rb-music-theory/tree/master"
@@ -19,8 +18,6 @@ SPEC = Gem::Specification.new do |s|
   s.name = GEM_NAME
   s.version = GEM_VERSION
   s.platform = Gem::Platform::RUBY
-  s.has_rdoc = true
-  s.extra_rdoc_files = ["README.textile", "LICENSE", 'TODO']
   s.summary = PROJECT_SUMMARY
   s.description = PROJECT_DESCRIPTION
   s.author = GEM_AUTHOR
